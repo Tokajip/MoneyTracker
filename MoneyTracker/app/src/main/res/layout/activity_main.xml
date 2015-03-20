@@ -1,4 +1,59 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-    android:layout_width="match_parent" android:layout_height="match_parent" tools:context=".Main"
-    tools:ignore="MergeRootFrame" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Main"
+    tools:ignore="MergeRootFrame"
+    style="@style/Base.TextAppearance.Widget.AppCompat.ExpandedMenu.Item">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+
+        android:layout_centerInParent="true">
+
+        <TableRow>
+
+            <TextView
+                android:padding="15dp"
+                android:text="Kiadás"
+                android:background="#ff13b739"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:padding="15dp"
+                android:text="Bevétel"
+                android:background="#ff13b739"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:padding="15dp"
+                android:text="teszt"
+                android:background="#ff13b739"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:padding="15dp"
+                android:text="Beállítások"
+                android:background="#ff13b739"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_margin="5dp" />
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>
