@@ -16,6 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".NotificationReceive" >
+            <intent-filter>
+                <action android:name="android.media.EXTRA_VOLUME_STREAM_VALUE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".Income"
+            android:label="@string/title_activity_income" >
+        </activity>
     </application>
 
 </manifest>

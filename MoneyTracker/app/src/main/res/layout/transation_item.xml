@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/transation_item_lin_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/transation_item_title"
+            android:layout_width="wrap_content"
+            android:textSize="35sp"
+            android:layout_height="wrap_content"
+            android:padding="3dp"/>
+
+        <TextView
+            android:id="@+id/transation_item_date"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/transation_item_huf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ft"
+        android:textSize="25sp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="5dp"/>
+
+    <TextView
+        android:id="@+id/transation_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_toLeftOf="@id/transation_item_huf"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dp"/>
+
+</RelativeLayout>

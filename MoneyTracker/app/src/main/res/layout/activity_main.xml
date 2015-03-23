@@ -24,6 +24,7 @@
 
             <TextView
                 android:padding="15dp"
+                android:id="@+id/outcome_tile"
                 android:text="Kiadás"
                 android:background="#ff13b739"
                 style="@style/Base.TextAppearance.AppCompat.Title"
@@ -32,6 +33,7 @@
 
             <TextView
                 android:padding="15dp"
+                android:id="@+id/income_tile"
                 android:text="Bevétel"
                 android:background="#ff13b739"
                 style="@style/Base.TextAppearance.AppCompat.Title"
@@ -43,6 +45,7 @@
 
             <TextView
                 android:padding="15dp"
+                android:id="@+id/test_tile"
                 android:text="teszt"
                 android:background="#ff13b739"
                 style="@style/Base.TextAppearance.AppCompat.Title"
@@ -50,6 +53,7 @@
 
             <TextView
                 android:padding="15dp"
+                android:id="@+id/setting_tile"
                 android:text="Beállítások"
                 android:background="#ff13b739"
                 style="@style/Base.TextAppearance.AppCompat.Title"
