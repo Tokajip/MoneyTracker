@@ -1,37 +1,154 @@
 package tp.hu.moneytracker;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import tp.hu.moneytracker.adapter.TransationAdapter;
+import tp.hu.moneytracker.adapter.TransactionAdapter;
+import tp.hu.moneytracker.data.Transaction;
+import tp.hu.moneytracker.datastorage.TransactionDbLoader;
+import tp.hu.moneytracker.db.DbConstants;
 
 
 public class Income extends ActionBarActivity {
+
+    // Log tag
+    public static final String TAG = "TodoListFragment";
+
+    // State
+    private LocalBroadcastManager lbm;
+
+    // DBloader
+    private TransactionDbLoader dbLoader;
+    private GetAllTask getAllTask;
+    private ListView list;
+    private TransactionAdapter adapter;
+    private ArrayList<Transaction> listTransaction;
+
+    public Income() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
 
-        Transation t = new Transation();
-        t.setTitle("Test");
-        t.setDate("2015-02-02");
-        t.setPrice(15000);
-        ArrayList<Transation> listTransation = new ArrayList<>();
-        for(int i=0; i<25; i++){
-            listTransation.add(t);
-        }
-        ListView list = (ListView) findViewById(R.id.incomeList);
-        list.setAdapter(new TransationAdapter(getApplication(),listTransation));
+        lbm = LocalBroadcastManager.getInstance(getApplicationContext());
+        dbLoader = TransactionApplication.getTransationDbLoader();
+
+        Transaction t = new Transaction("Test", "2015-02-02", 15000);
+        long i = dbLoader.createTransition(t);
+        list = (ListView) findViewById(R.id.incomeList);
+        refreshList();
     }
 
-/*
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Kódból regisztraljuk az adatbazis modosulasara figyelmezteto     Receiver-t
+        IntentFilter filter = new IntentFilter(
+                DbConstants.ACTION_DATABASE_CHANGED);
+        lbm.registerReceiver(updateDbReceiver, filter);
+
+        // Frissitjuk a lista tartalmat, ha visszater a user
+        refreshList();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Kiregisztraljuk az adatbazis modosulasara figyelmezteto  Receiver-t
+        lbm.unregisterReceiver(updateDbReceiver);
+
+        if (getAllTask != null) {
+            getAllTask.cancel(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Ha van Cursor rendelve az Adapterhez, lezarjuk
+        if (adapter != null && adapter.getCursor() != null) {
+            adapter.getCursor().close();
+        }
+    }
+
+    private class GetAllTask extends AsyncTask<Void, Void, Cursor> {
+
+        private static final String TAG = "GetAllTask";
+
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            try {
+                Cursor result = dbLoader.fetchAll();
+
+                if (!isCancelled()) {
+                    return result;
+                } else {
+                    Log.d(TAG, "Cancelled, closing cursor");
+                    if (result != null) {
+                        result.close();
+                    }
+
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Cursor result) {
+            super.onPostExecute(result);
+
+            Log.d(TAG, "Fetch completed, displaying cursor results!");
+            try {
+                if (adapter == null) {
+                    adapter = new TransactionAdapter(getApplicationContext(), result);
+                    list.setAdapter(adapter);
+                } else {
+                    adapter.changeCursor(result);
+                }
+
+                getAllTask = null;
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
+
+    private BroadcastReceiver updateDbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshList();
+        }
+    };
+
+    private void refreshList() {
+        if (getAllTask != null) {
+            getAllTask.cancel(false);
+        }
+
+        getAllTask = new GetAllTask();
+        getAllTask.execute();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,10 +166,11 @@ public class Income extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            dbLoader.deleteAll();
+            refreshList();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-*/
 }
