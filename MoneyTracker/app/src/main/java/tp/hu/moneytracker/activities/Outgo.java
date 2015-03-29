@@ -1,9 +1,8 @@
-package tp.hu.moneytracker;
+package tp.hu.moneytracker.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,15 +13,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
+import tp.hu.moneytracker.R;
+import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
 import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
-import tp.hu.moneytracker.db.DbConstants;
+import tp.hu.moneytracker.util.HandleJSON;
 
 
-public class Income extends ActionBarActivity {
+public class Outgo extends ActionBarActivity {
 
     // Log tag
     public static final String TAG = "TodoListFragment";
@@ -35,22 +34,23 @@ public class Income extends ActionBarActivity {
     private GetAllTask getAllTask;
     private ListView list;
     private TransactionAdapter adapter;
-    private ArrayList<Transaction> listTransaction;
 
-    public Income() {
+    public Outgo() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
+        list = (ListView) findViewById(R.id.incomeList);
 
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = TransactionApplication.getTransationDbLoader();
 
-        Transaction t = new Transaction("Test", "2015-02-02", 15000);
-        long i = dbLoader.createTransition(t);
-        list = (ListView) findViewById(R.id.incomeList);
+        Transaction t = new Transaction("Test", 1427588836095L, 15000);
+        t = HandleJSON.readStream("json/transaction2.txt", getApplicationContext(), Transaction.class);
+
+        dbLoader.createTransition(t);
         refreshList();
     }
 
@@ -59,14 +59,14 @@ public class Income extends ActionBarActivity {
         super.onResume();
 
         // Kódból regisztraljuk az adatbazis modosulasara figyelmezteto     Receiver-t
-        IntentFilter filter = new IntentFilter(
+  /*      IntentFilter filter = new IntentFilter(
                 DbConstants.ACTION_DATABASE_CHANGED);
         lbm.registerReceiver(updateDbReceiver, filter);
-
+*/
         // Frissitjuk a lista tartalmat, ha visszater a user
         refreshList();
     }
-
+/*
     @Override
     protected void onPause() {
         super.onPause();
@@ -78,6 +78,7 @@ public class Income extends ActionBarActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -86,6 +87,7 @@ public class Income extends ActionBarActivity {
             adapter.getCursor().close();
         }
     }
+*/
 
     private class GetAllTask extends AsyncTask<Void, Void, Cursor> {
 
@@ -94,7 +96,7 @@ public class Income extends ActionBarActivity {
         @Override
         protected Cursor doInBackground(Void... params) {
             try {
-                Cursor result = dbLoader.fetchAll();
+                Cursor result = dbLoader.fetchOutgoes();
 
                 if (!isCancelled()) {
                     return result;
@@ -127,7 +129,7 @@ public class Income extends ActionBarActivity {
 
                 getAllTask = null;
             } catch (Exception e) {
-
+                Log.e(TAG, e.toString());
             }
         }
 
@@ -167,7 +169,6 @@ public class Income extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             dbLoader.deleteAll();
-            refreshList();
             return true;
         }
 

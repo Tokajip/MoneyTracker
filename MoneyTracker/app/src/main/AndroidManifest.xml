@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Main"
+            android:name=".activities.Main"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,15 +18,13 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NotificationReceive" >
-            <intent-filter>
-                <action android:name="android.media.EXTRA_VOLUME_STREAM_VALUE" />
-            </intent-filter>
-        </receiver>
-
         <activity
-            android:name=".Income"
+            android:name=".activities.Income"
             android:label="@string/title_activity_income" >
+        </activity>
+        <activity
+            android:name=".activities.Outgo"
+            android:label="@string/title_activity_outgo" >
         </activity>
     </application>
 

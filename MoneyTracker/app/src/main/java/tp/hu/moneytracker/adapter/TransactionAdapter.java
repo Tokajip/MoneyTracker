@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
@@ -17,11 +21,9 @@ import tp.hu.moneytracker.datastorage.TransactionDbLoader;
  */
 public class TransactionAdapter extends CursorAdapter {
 
-    private Context mContext;
 
     public TransactionAdapter(Context context, Cursor cursor) {
         super(context, cursor, false);
-        this.mContext = context;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class TransactionAdapter extends CursorAdapter {
         Transaction transaction = TransactionDbLoader.getTransationByCursor(cursor);
 
         title.setText(transaction.getTitle());
-        date.setText(transaction.getDate());
+        date.setText(convertDate(transaction.getDate(),"yyyy-MM-dd"));
         price.setText(String.valueOf(transaction.getPrice()));
     }
 
@@ -50,5 +52,11 @@ public class TransactionAdapter extends CursorAdapter {
     public Object getItem(int position) {
         getCursor().moveToPosition(position);
         return TransactionDbLoader.getTransationByCursor(getCursor());
+    }
+
+    public static String convertDate(long time, String form){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(form);
+        return format.format(date);
     }
 }

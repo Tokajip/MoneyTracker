@@ -23,7 +23,7 @@ public class DbConstants {
         // tabla neve
         public static final String DATABASE_TABLE = "transantion";
         // oszlopnevek
-        public static final String KEY_ROWID = "id";
+        public static final String KEY_ROWID = "_id";
         public static final String KEY_TITLE = "title";
         public static final String KEY_DATE = "date";
         public static final String KEY_PRICE= "price";
@@ -32,7 +32,7 @@ public class DbConstants {
                 "create table if not exists "+DATABASE_TABLE+" ( "
                         + KEY_ROWID +" integer primary key autoincrement, "
                         + KEY_TITLE + " text not null, "
-                        + KEY_DATE + " text, "
+                        + KEY_DATE + " long, "
                         + KEY_PRICE +" integer"
                         + "); ";
         // sema torlo szkript

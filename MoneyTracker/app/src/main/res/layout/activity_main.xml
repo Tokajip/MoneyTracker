@@ -24,7 +24,7 @@
 
             <TextView
                 android:padding="15dp"
-                android:id="@+id/outcome_tile"
+                android:id="@+id/outgo_tile"
                 android:text="Kiadás"
                 android:background="#ff13b739"
                 style="@style/Base.TextAppearance.AppCompat.Title"

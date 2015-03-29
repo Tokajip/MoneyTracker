@@ -42,7 +42,7 @@ public class TransactionDbLoader {
         ContentValues values = new ContentValues();
         values.put(DbConstants.Transaction.KEY_TITLE, transition.getTitle());
         values.put(DbConstants.Transaction.KEY_DATE, transition.getDate());
-        values.put(DbConstants.Transaction.KEY_PRICE, (Integer) transition.getPrice());
+        values.put(DbConstants.Transaction.KEY_PRICE, transition.getPrice());
 
         return mDb.insert(DbConstants.Transaction.DATABASE_TABLE, null, values);
     }
@@ -81,8 +81,45 @@ public class TransactionDbLoader {
                 }, null, null, null, null, DbConstants.Transaction.KEY_TITLE);
     }
 
+    public Cursor fetchSpecific(String parameter) {
+        Cursor c = mDb.query(DbConstants.Transaction.DATABASE_TABLE,
+                new String[]{
+                        DbConstants.Transaction.KEY_ROWID,
+                        DbConstants.Transaction.KEY_TITLE,
+                        DbConstants.Transaction.KEY_DATE,
+                        DbConstants.Transaction.KEY_PRICE
+                }, DbConstants.Transaction.KEY_TITLE + " like ?",
+                new String[]{parameter}, null, null, DbConstants.Transaction.KEY_TITLE
+        );
+        return c;
+    }
+    public Cursor fetchIncomes() {
+        Cursor c = mDb.query(DbConstants.Transaction.DATABASE_TABLE,
+                new String[]{
+                        DbConstants.Transaction.KEY_ROWID,
+                        DbConstants.Transaction.KEY_TITLE,
+                        DbConstants.Transaction.KEY_DATE,
+                        DbConstants.Transaction.KEY_PRICE
+                }, DbConstants.Transaction.KEY_PRICE + "> 0",
+                null, null, null, DbConstants.Transaction.KEY_TITLE
+        );
+        return c;
+    }
+    public Cursor fetchOutgoes() {
+        Cursor c = mDb.query(DbConstants.Transaction.DATABASE_TABLE,
+                new String[]{
+                        DbConstants.Transaction.KEY_ROWID,
+                        DbConstants.Transaction.KEY_TITLE,
+                        DbConstants.Transaction.KEY_DATE,
+                        DbConstants.Transaction.KEY_PRICE
+                }, DbConstants.Transaction.KEY_PRICE + "< 0",
+                null, null, null, DbConstants.Transaction.KEY_TITLE
+        );
+        return c;
+    }
     // egy Transaction lekérése
-    public tp.hu.moneytracker.data.Transaction fetchTodo(long rowId) {
+
+    public tp.hu.moneytracker.data.Transaction fetchTransaction(long rowId) {
         // a Transaction-re mutato cursor
         Cursor c = mDb.query(
                 DbConstants.Transaction.DATABASE_TABLE,
@@ -91,7 +128,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_TITLE,
                         DbConstants.Transaction.KEY_DATE,
                         DbConstants.Transaction.KEY_PRICE
-                }, DbConstants.Transaction.KEY_ROWID + "=",
+                }, DbConstants.Transaction.KEY_ROWID + "=?",
                 new String[]{"" + rowId}, null, null, DbConstants.Transaction.KEY_TITLE);
         // ha van rekord amire a Cursor mutat
         if (c.moveToFirst())
@@ -103,7 +140,7 @@ public class TransactionDbLoader {
     public static tp.hu.moneytracker.data.Transaction getTransationByCursor(Cursor c) {
         return new tp.hu.moneytracker.data.Transaction(
                 c.getString(c.getColumnIndex(DbConstants.Transaction.KEY_TITLE)), // title
-                c.getString(c.getColumnIndex(DbConstants.Transaction.KEY_DATE)), // date
+                c.getLong(c.getColumnIndex(DbConstants.Transaction.KEY_DATE)), // date
                 c.getInt(c.getColumnIndex(DbConstants.Transaction.KEY_PRICE)) // price
         );
     }
