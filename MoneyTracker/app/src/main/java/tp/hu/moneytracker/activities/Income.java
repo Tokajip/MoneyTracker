@@ -20,8 +20,8 @@ import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 import tp.hu.moneytracker.util.HandleJSON;
 
-
-public class Income extends ActionBarActivity {
+//Todo: Activityből származni
+public class Income extends ActionBarActivity{
 
     // Log tag
     public static final String TAG = "TodoListFragment";

@@ -8,21 +8,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="2dp">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/transation_item_title"
             android:layout_width="wrap_content"
-            android:textSize="28sp"
-            android:textColor="#000000"
+            android:textSize="35sp"
             android:layout_height="wrap_content"
             android:padding="3dp"/>
 
         <TextView
             android:id="@+id/transation_item_date"
             android:layout_width="wrap_content"
-            android:textSize="17sp"
-            android:textColor="#000000"
+            android:textSize="20sp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -31,20 +29,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ft"
-        android:textSize="20sp"
-        android:textColor="#000000"
+        android:textSize="25sp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="3dp"/>
+        android:paddingRight="5dp"/>
 
     <TextView
         android:id="@+id/transation_item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#000000"
+        android:textSize="25sp"
         android:layout_toLeftOf="@id/transation_item_huf"
         android:layout_centerVertical="true"
-        android:paddingRight="7dp"/>
+        android:paddingRight="10dp"/>
 
 </RelativeLayout>
