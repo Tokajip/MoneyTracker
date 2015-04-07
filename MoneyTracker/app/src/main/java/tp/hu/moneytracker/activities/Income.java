@@ -12,15 +12,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
-import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 import tp.hu.moneytracker.db.DbConstants;
-import tp.hu.moneytracker.util.HandleJSON;
 
 //Todo: Activityből származni
 public class Income extends ActionBarActivity{
@@ -48,12 +48,39 @@ public class Income extends ActionBarActivity{
 
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = TransactionApplication.getTransationDbLoader();
+        refreshList("Food");
+        TextView tv_food = (TextView) findViewById(R.id.food);
+        tv_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Food");
+            }
+        });
+        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
+        tv_clothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Clothes");
+            }
+        });
+//        categorySelection();
+    }
 
-        Transaction t = null;
-        t = HandleJSON.readStream("json/transaction1.txt", getApplicationContext(), Transaction.class);
-
-        dbLoader.createTransition(t);
-        refreshList();
+    private void categorySelection() {
+        TextView tv_food = (TextView) findViewById(R.id.food);
+        tv_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Food");
+            }
+        });
+        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
+        tv_clothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Clothes");
+            }
+        });
     }
 
     @Override
@@ -65,7 +92,7 @@ public class Income extends ActionBarActivity{
                 DbConstants.ACTION_DATABASE_CHANGED);
         lbm.registerReceiver(updateDbReceiver, filter);
         // Frissitjuk a lista tartalmat, ha visszater a user
-        refreshList();
+        refreshList("Food");
     }
     @Override
     protected void onPause() {
@@ -88,14 +115,15 @@ public class Income extends ActionBarActivity{
         }
     }
 
-    private class GetAllTask extends AsyncTask<Void, Void, Cursor> {
+    private class GetAllTask extends AsyncTask<String, Void, Cursor> {
 
         private static final String TAG = "GetAllTask";
 
         @Override
-        protected Cursor doInBackground(Void... params) {
+        protected Cursor doInBackground(String[] params) {
+            Log.i(TAG,params[0]);
             try {
-                Cursor result = dbLoader.fetchIncomes();
+                Cursor result = dbLoader.fetchByCategory("Clothes");
 
                 if (!isCancelled()) {
                     return result;
@@ -137,17 +165,18 @@ public class Income extends ActionBarActivity{
     private BroadcastReceiver updateDbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            refreshList();
+            refreshList("Food");
         }
     };
 
-    private void refreshList() {
+    private void refreshList(String category) {
         if (getAllTask != null) {
             getAllTask.cancel(false);
         }
 
         getAllTask = new GetAllTask();
-        getAllTask.execute();
+        String[] params = new String[]{category};
+        getAllTask.execute(params);
     }
 
 

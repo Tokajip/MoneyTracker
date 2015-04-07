@@ -10,5 +10,7 @@
     <string name="tile_outgo">Kiadás</string>
     <string name="tile_date">Dátumra szűrés</string>
     <string name="tile_settings">Beállítások</string>
+    <string name="food">Élelmiszer</string>
+    <string name="clothes">Ruházat</string>
 
 </resources>

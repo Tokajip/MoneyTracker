@@ -7,18 +7,29 @@ public class Transaction {
     private String title;
     private long date;
     private int price;
-    private enum transactionType {income, outgo;};
+    private String category;
     private transactionType type = transactionType.income;
 
-    public Transaction(String title, long date, int price) {
+    private enum transactionType {income, outgo};
+    public Transaction(String title, long date, int price, String cat) {
         this.title = title;
         this.date = date;
         this.price = price;
+        this.category=cat;
         if (price > 0) {
             type = transactionType.income;
         } else {
             type = transactionType.outgo;
         }
+
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getTitle() {

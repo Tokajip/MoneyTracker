@@ -29,7 +29,13 @@ public class ProcessPushNotification {
     public void processDatas(String message){
         Transaction t = HandleJSON.readString(message,ctx,Transaction.class);
         sendNotification(t.getTitle());
-//        dbLoader.createTransition(t);
+        if(t.getTitle().equalsIgnoreCase("Tesco")){
+            t.setCategory("Food");
+        }
+        else if(t.getTitle().equalsIgnoreCase("Nike")){
+            t.setCategory("Clothes");
+        }
+        dbLoader.createTransition(t);
     }
     private  void sendNotification(String msg) {
         mNotificationManager = (NotificationManager)
@@ -47,6 +53,7 @@ public class ProcessPushNotification {
                         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
+        mBuilder.setAutoCancel(true);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }

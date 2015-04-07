@@ -16,9 +16,7 @@ import android.widget.ListView;
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
-import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
-import tp.hu.moneytracker.util.HandleJSON;
 
 
 public class Outgo extends ActionBarActivity {
@@ -47,10 +45,6 @@ public class Outgo extends ActionBarActivity {
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = TransactionApplication.getTransationDbLoader();
 
-        Transaction t = new Transaction("Test", 1427588836095L, 15000);
-        t = HandleJSON.readStream("json/transaction2.txt", getApplicationContext(), Transaction.class);
-
-        dbLoader.createTransition(t);
         refreshList();
     }
 

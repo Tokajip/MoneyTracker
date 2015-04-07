@@ -32,16 +32,17 @@
                         android:layout_margin="5dp"
                         android:background="#ff13b739"
                         android:padding="15dp"
-                        android:text="Kiadás" />
+                        android:text="@string/food"
+                        android:id="@+id/food"/>
 
                     <TextView
-                        android:id="@+id/income_tile"
+                        android:id="@+id/clothes"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:background="#ff13b739"
                         android:padding="15dp"
-                        android:text="Bevétel" />
+                        android:text="@string/clothes"/>
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"

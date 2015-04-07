@@ -18,7 +18,7 @@ public class DbConstants {
     // osszes belso osztaly DATABASE_DROP szkriptje osszefuzve
     public static String DATABASE_DROP_ALL = Transaction.DATABASE_DROP;
 
-    /* Todo osztaly DB konstansai */
+    /* Transaction osztaly DB konstansai */
     public static class Transaction {
         // tabla neve
         public static final String DATABASE_TABLE = "transantion";
@@ -27,13 +27,15 @@ public class DbConstants {
         public static final String KEY_TITLE = "title";
         public static final String KEY_DATE = "date";
         public static final String KEY_PRICE= "price";
+        public static final String KEY_CATEGORY= "category";
         // sema letrehozo szkript
         public static final String DATABASE_CREATE =
                 "create table if not exists "+DATABASE_TABLE+" ( "
                         + KEY_ROWID +" integer primary key autoincrement, "
                         + KEY_TITLE + " text not null, "
                         + KEY_DATE + " long, "
-                        + KEY_PRICE +" integer"
+                        + KEY_PRICE +" integer,"
+                        + KEY_CATEGORY +" text"
                         + "); ";
         // sema torlo szkript
         public static final String DATABASE_DROP =
