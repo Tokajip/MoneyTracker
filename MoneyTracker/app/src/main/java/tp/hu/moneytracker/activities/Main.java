@@ -11,6 +11,7 @@ import android.widget.GridView;
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.adapter.TileAdapter;
 import tp.hu.moneytracker.data.TileDatas;
+import tp.hu.moneytracker.gcm.GCMRegistrator;
 
 
 public class Main extends Activity {
@@ -40,6 +41,8 @@ public class Main extends Activity {
                 }
             }
         });
+
+        new GCMRegistrator().execute(new Context[]{ctx});
 /*
         TextView outgo = (TextView) findViewById(R.id.outgo_tile);
         outgo.setOnClickListener(new View.OnClickListener() {
