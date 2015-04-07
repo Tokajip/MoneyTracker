@@ -7,11 +7,9 @@ public class Transaction {
     private String title;
     private long date;
     private int price;
-
-
-
     private enum transactionType {income, outgo;};
     private transactionType type = transactionType.income;
+
     public Transaction(String title, long date, int price) {
         this.title = title;
         this.date = date;
@@ -46,14 +44,13 @@ public class Transaction {
 
     public void setPrice(int price) {
         this.price = price;
-        if (price > 0) {
-            type = transactionType.income;
-        } else {
-            type = transactionType.outgo;
-        }
     }
 
     public String getType() {
         return type != null ? type.toString() : "";
+    }
+
+    public void setType(int i){
+        type = i==0 ? transactionType.outgo : transactionType.income;
     }
 }

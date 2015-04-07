@@ -33,6 +33,11 @@ public class HandleJSON {
             data = out.toString();
             reader.close();
             t = (Transaction) gson.fromJson(data, c);
+            if(t.getPrice()<0){
+                t.setType(0);
+            }else {
+                t.setType(1);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,7 +48,13 @@ public class HandleJSON {
 
     public static Transaction readString(String json, Context ctx, Class c){
         Gson gson = new Gson();
-        return (Transaction)gson.fromJson(json,c);
+        Transaction t = (Transaction)gson.fromJson(json,c);
+        if(t.getPrice()<0){
+            t.setType(0);
+        }else {
+            t.setType(1);
+        }
+        return  t ;
     }
 
 

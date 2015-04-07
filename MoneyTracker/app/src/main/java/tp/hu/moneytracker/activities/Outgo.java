@@ -66,7 +66,7 @@ public class Outgo extends ActionBarActivity {
         // Frissitjuk a lista tartalmat, ha visszater a user
         refreshList();
     }
-/*
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -87,7 +87,7 @@ public class Outgo extends ActionBarActivity {
             adapter.getCursor().close();
         }
     }
-*/
+
 
     private class GetAllTask extends AsyncTask<Void, Void, Cursor> {
 

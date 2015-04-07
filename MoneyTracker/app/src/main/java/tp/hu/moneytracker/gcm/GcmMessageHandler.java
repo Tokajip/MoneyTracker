@@ -9,13 +9,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import tp.hu.moneytracker.data.Transaction;
+import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
-import tp.hu.moneytracker.util.HandleJSON;
+import tp.hu.moneytracker.util.ProcessPushNotification;
 
 public class GcmMessageHandler extends IntentService {
 
-     String mes;
+    private static final String TAG = GcmMessageHandler.class.getSimpleName();
+    String mes;
      private Handler handler;
     private TransactionDbLoader dbLoader;
 
@@ -28,6 +29,7 @@ public class GcmMessageHandler extends IntentService {
         // TODO Auto-generated method stub
         super.onCreate();
         handler = new Handler();
+        dbLoader = TransactionApplication.getTransationDbLoader();
     }
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -39,11 +41,8 @@ public class GcmMessageHandler extends IntentService {
         String messageType = gcm.getMessageType(intent);
 
        mes = extras.getString("payload");
-       Transaction t =  HandleJSON.readString(mes,getApplicationContext(),Transaction.class);
-        if(t!=null){
-            showToast();
-            dbLoader.createTransition(t);
-        }
+       new ProcessPushNotification(getApplicationContext()).processDatas(mes);
+
        Log.i("GCM", "Received : (" +messageType+")  "+extras.getString("title"));
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
