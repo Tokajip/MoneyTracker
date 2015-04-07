@@ -9,10 +9,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import tp.hu.moneytracker.data.Transaction;
+import tp.hu.moneytracker.datastorage.TransactionDbLoader;
+import tp.hu.moneytracker.util.HandleJSON;
+
 public class GcmMessageHandler extends IntentService {
 
      String mes;
      private Handler handler;
+    private TransactionDbLoader dbLoader;
+
     public GcmMessageHandler() {
         super("GcmMessageHandler");
     }
@@ -32,8 +38,12 @@ public class GcmMessageHandler extends IntentService {
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
 
-       mes = extras.getString("title");
-       showToast();
+       mes = extras.getString("payload");
+       Transaction t =  HandleJSON.readString(mes,getApplicationContext(),Transaction.class);
+        if(t!=null){
+            showToast();
+            dbLoader.createTransition(t);
+        }
        Log.i("GCM", "Received : (" +messageType+")  "+extras.getString("title"));
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);

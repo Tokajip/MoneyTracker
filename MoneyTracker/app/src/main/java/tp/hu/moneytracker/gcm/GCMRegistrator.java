@@ -25,6 +25,7 @@ public class GCMRegistrator extends AsyncTask<Context,Void,String> {
             if (gcm == null) {
                 gcm = GoogleCloudMessaging.getInstance(params[0]);
             }
+            /*Nexus:APA91bEjAa1yNmVmTNTOCySl7oste78XElO24aaQq50AHhJxAaKQQKBcGpurdHf4R2nC6hS9aTUioEklUf6O-MFCHh6ORSocKjI-po10MONBvx3agUOa0BC287fXKcAbQ4qik0t-ehV4R2rw9a3JMwqY_74vCu1gUQ*/
             regid = gcm.register(PROJECT_NUMBER);
             msg = "Device registered, registration ID=" + regid;
             Log.i("GCM", msg);

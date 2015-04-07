@@ -41,5 +41,10 @@ public class HandleJSON {
         return t;
     }
 
+    public static Transaction readString(String json, Context ctx, Class c){
+        Gson gson = new Gson();
+        return (Transaction)gson.fromJson(json,c);
+    }
+
 
 }
