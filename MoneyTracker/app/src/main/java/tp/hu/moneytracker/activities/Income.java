@@ -123,7 +123,7 @@ public class Income extends ActionBarActivity{
         protected Cursor doInBackground(String[] params) {
             Log.i(TAG,params[0]);
             try {
-                Cursor result = dbLoader.fetchByCategory("Clothes");
+                Cursor result = dbLoader.fetchByCategory(params[0]);
 
                 if (!isCancelled()) {
                     return result;
