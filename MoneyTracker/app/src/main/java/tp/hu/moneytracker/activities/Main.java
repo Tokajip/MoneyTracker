@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.adapter.TileAdapter;
 import tp.hu.moneytracker.data.TileDatas;
@@ -64,4 +65,16 @@ public class Main extends Activity {
             }
         });*/
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MoneyTrackerApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MoneyTrackerApplication.activityPaused();
+    }
 }

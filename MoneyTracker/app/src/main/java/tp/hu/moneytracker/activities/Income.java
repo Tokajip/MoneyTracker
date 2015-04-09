@@ -12,12 +12,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
-import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 import tp.hu.moneytracker.db.DbConstants;
@@ -26,7 +24,7 @@ import tp.hu.moneytracker.db.DbConstants;
 public class Income extends ActionBarActivity{
 
     // Log tag
-    public static final String TAG = "TodoListFragment";
+    public static final String TAG = "Income";
 
     // State
     private LocalBroadcastManager lbm;
@@ -47,32 +45,16 @@ public class Income extends ActionBarActivity{
         list = (ListView) findViewById(R.id.incomeList);
 
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
-        dbLoader = TransactionApplication.getTransationDbLoader();
+        dbLoader = MoneyTrackerApplication.getTransationDbLoader();
         refreshList("Food");
-        categorySelection();
     }
 
-    private void categorySelection() {
-        TextView tv_food = (TextView) findViewById(R.id.food);
-        tv_food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshList("Food");
-            }
-        });
-        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
-        tv_clothes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshList("Clothes");
-            }
-        });
-    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        MoneyTrackerApplication.activityResumed();
         // Kódból regisztraljuk az adatbazis modosulasara figyelmezteto     Receiver-t
         IntentFilter filter = new IntentFilter(
                 DbConstants.ACTION_DATABASE_CHANGED);
@@ -83,6 +65,7 @@ public class Income extends ActionBarActivity{
     @Override
     protected void onPause() {
         super.onPause();
+        MoneyTrackerApplication.activityPaused();
         // Kiregisztraljuk az adatbazis modosulasara figyelmezteto  Receiver-t
         lbm.unregisterReceiver(updateDbReceiver);
 
@@ -184,6 +167,22 @@ public class Income extends ActionBarActivity{
         if (id == R.id.action_settings) {
             dbLoader.deleteAll();
             return true;
+        }
+        if(id==R.id.action_share){
+//           Todo: Email küldés
+            String[] list= new String[50];
+            int i = 0;
+            Cursor c = dbLoader.fetchAll();
+            while(c.moveToNext()){
+                list[i++]=TransactionDbLoader.getTransationByCursor(c).toString();
+            }
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_EMAIL, "tokajip@gmail.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "MoneyTracker db rekord");
+            intent.putExtra(Intent.EXTRA_TEXT, list);
+            startActivity(Intent.createChooser(intent, "Send Email"));
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

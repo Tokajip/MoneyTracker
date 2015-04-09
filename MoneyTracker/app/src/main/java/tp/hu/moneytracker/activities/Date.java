@@ -1,7 +1,7 @@
 package tp.hu.moneytracker.activities;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
 
 public class Date extends ActionBarActivity {
@@ -65,7 +66,7 @@ public class Date extends ActionBarActivity {
                         "November",
                         "December"
                 };
-                listView.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1, android.R.id.text1, values));
+                listView.setAdapter(new ArrayAdapter<String>(Date.this,R.layout.transation_item, R.id.transation_item_title, values));
             }
         });
         TextView tv_clothes = (TextView) findViewById(R.id.today);
@@ -75,5 +76,17 @@ public class Date extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        MoneyTrackerApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MoneyTrackerApplication.activityPaused();
     }
 }

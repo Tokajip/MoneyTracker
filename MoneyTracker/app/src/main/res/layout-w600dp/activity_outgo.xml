@@ -26,54 +26,67 @@
                 <TableRow>
 
                     <TextView
-                        android:id="@+id/salary"
+                        android:id="@+id/food"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:background="#ff086212"
+                        android:background="#ff0000"
                         android:padding="15dp"
-                        android:textColor="#ffffff"
-                        android:text="@string/salary" />
+                        android:text="@string/food" />
 
                     <TextView
-                        android:id="@+id/pocketmoney"
+                        android:id="@+id/clothes"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:background="#ff086212"
+                        android:background="#ff0000"
                         android:padding="15dp"
-                        android:text="@string/pocketmoney"
-                        android:textColor="#ffffff" />
+                        android:text="@string/clothes" />
 
                     <TextView
-                        android:id="@+id/pension"
+                        android:id="@+id/entertainment"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:background="#ff086212"
+                        android:background="#ff0000"
                         android:padding="15dp"
-                        android:text="@string/pension"
-                        android:textColor="#ffffff" />
+                        android:text="@string/entertainment" />
 
                     <TextView
-                        android:id="@+id/scholarship"
+                        android:id="@+id/bills"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:background="#ff086212"
+                        android:background="#ff0000"
                         android:padding="15dp"
-                        android:text="@string/scholarship"
-                        android:textColor="#ffffff" />
+                        android:text="@string/bills" />
+
+                    <TextView
+                        android:id="@+id/travel"
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="#ff0000"
+                        android:padding="15dp"
+                        android:text="@string/travel" />
+
+                    <TextView
+                        android:id="@+id/sport"
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="#ff0000"
+                        android:padding="15dp"
+                        android:text="@string/sport" />
 
                     <TextView
                         android:id="@+id/other"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:background="#ff086212"
+                        android:background="#ff0000"
                         android:padding="15dp"
-                        android:text="@string/other"
-                        android:textColor="#ffffff" />
+                        android:text="@string/other" />
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>

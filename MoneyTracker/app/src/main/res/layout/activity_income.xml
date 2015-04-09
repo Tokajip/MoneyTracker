@@ -27,54 +27,54 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/salary"
                         style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="@string/food"
-                        android:id="@+id/food"/>
+                        android:layout_margin="3dp"
+                        android:background="#ff086212"
+                        android:padding="10dp"
+                        android:text="@string/salary" />
 
                     <TextView
-                        android:id="@+id/clothes"
+                        android:id="@+id/pocketmoney"
                         style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="@string/clothes"/>
+                        android:layout_margin="3dp"
+                        android:background="#ff086212"
+                        android:padding="10dp"
+                        android:text="@string/pocketmoney"/>
 
                     <TextView
+                        android:id="@+id/pension"
                         style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="Kiadás" />
+                        android:layout_margin="3dp"
+                        android:background="#ff086212"
+                        android:padding="10dp"
+                        android:text="@string/pension" />
 
                     <TextView
+                        android:id="@+id/scholarship"
                         style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="Kiadás" />
+                        android:layout_margin="3dp"
+                        android:background="#ff086212"
+                        android:padding="10dp"
+                        android:text="@string/scholarship" />
 
                     <TextView
+                        android:id="@+id/other"
                         style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="Kiadás" />
-
-                    <TextView
-                        style="@style/Base.TextAppearance.AppCompat.Title"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff13b739"
-                        android:padding="15dp"
-                        android:text="Kiadás" />
+                        android:layout_margin="3dp"
+                        android:background="#ff086212"
+                        android:padding="10dp"
+                        android:text="@string/other" />
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>

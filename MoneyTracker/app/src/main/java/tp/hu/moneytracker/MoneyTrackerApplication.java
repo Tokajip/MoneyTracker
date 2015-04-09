@@ -7,7 +7,7 @@ import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 /**
  * Created by Peti on 2015.03.24..
  */
-public class TransactionApplication extends Application {
+public class MoneyTrackerApplication extends Application {
     private static TransactionDbLoader dbLoader;
 
     public static TransactionDbLoader getTransationDbLoader() {
@@ -28,4 +28,17 @@ public class TransactionApplication extends Application {
         dbLoader.close();
         super.onTerminate();
     }
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
+    }
+
+    private static boolean activityVisible;
 }

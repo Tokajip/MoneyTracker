@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,20 +16,20 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-
                 android:stretchColumns="*">
 
-                <TableRow>
+                <TableRow
+                    android:layout_centerInParent="true"
+                    >
 
                     <TextView
+                        android:id="@+id/today"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="2dp"
                         android:background="#ff13b739"
                         android:padding="10dp"
-                        android:text="@string/today"
-                        android:id="@+id/today"/>
+                        android:text="@string/today" />
 
                     <TextView
                         android:id="@+id/day"
@@ -38,25 +38,25 @@
                         android:layout_margin="2dp"
                         android:background="#ff13b739"
                         android:padding="10dp"
-                        android:text="@string/day"/>
+                        android:text="@string/day" />
 
 
                     <TextView
+                        android:id="@+id/month"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="2dp"
                         android:background="#ff13b739"
                         android:padding="10dp"
-                        android:id="@+id/month"
                         android:text="@string/month" />
 
                     <TextView
+                        android:id="@+id/year"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="2dp"
                         android:background="#ff13b739"
                         android:padding="10dp"
-                        android:id="@+id/year"
                         android:text="@string/year" />
 
 

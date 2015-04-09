@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import tp.hu.moneytracker.TransactionApplication;
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 import tp.hu.moneytracker.util.ProcessPushNotification;
 
@@ -17,7 +17,7 @@ public class GcmMessageHandler extends IntentService {
 
     private static final String TAG = GcmMessageHandler.class.getSimpleName();
     String mes;
-     private Handler handler;
+    private Handler handler;
     private TransactionDbLoader dbLoader;
 
     public GcmMessageHandler() {
@@ -29,8 +29,9 @@ public class GcmMessageHandler extends IntentService {
         // TODO Auto-generated method stub
         super.onCreate();
         handler = new Handler();
-        dbLoader = TransactionApplication.getTransationDbLoader();
+        dbLoader = MoneyTrackerApplication.getTransationDbLoader();
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
@@ -40,21 +41,21 @@ public class GcmMessageHandler extends IntentService {
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
 
-       mes = extras.getString("payload");
-       new ProcessPushNotification(getApplicationContext()).processDatas(mes);
+        mes = extras.getString("payload");
+        new ProcessPushNotification(getApplicationContext()).processDatas(mes,handler);
 
-       Log.i("GCM", "Received : (" +messageType+")  "+extras.getString("title"));
+        Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
 
     }
 
-    public void showToast(){
+    public void showToast() {
         handler.post(new Runnable() {
             public void run() {
-                Toast.makeText(getApplicationContext(),mes , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), mes, Toast.LENGTH_LONG).show();
             }
-         });
+        });
 
     }
 }

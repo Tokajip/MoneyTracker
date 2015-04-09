@@ -14,5 +14,16 @@
     <string name="day">Napra</string>
     <string name="month">Hónapra</string>
     <string name="year">Évre</string>
+    <string name="popup_title">Forrás</string>
+    <string name="entertainment">Szórakozás</string>
+    <string name="bills">Számlák</string>
+    <string name="travel">Utazás</string>
+    <string name="sport">Sport</string>
+    <string name="other">Egyéb</string>
+    <string name="salary">Fizetés</string>
+    <string name="pocketmoney">Zsebpénz</string>
+    <string name="pension">Nyugdíj</string>
+    <string name="scholarship">Ösztöndíj</string>
+    <string name="action_share">Megosztás</string>
 
 </resources>

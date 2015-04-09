@@ -7,6 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -26,54 +27,67 @@
                 <TableRow>
 
                     <TextView
-                        android:id="@+id/salary"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff086212"
-                        android:padding="15dp"
-                        android:textColor="#ffffff"
-                        android:text="@string/salary" />
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:text="@string/food"
+                        android:id="@+id/food"/>
 
                     <TextView
-                        android:id="@+id/pocketmoney"
+                        android:id="@+id/clothes"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff086212"
-                        android:padding="15dp"
-                        android:text="@string/pocketmoney"
-                        android:textColor="#ffffff" />
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:text="@string/clothes"/>
 
                     <TextView
-                        android:id="@+id/pension"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff086212"
-                        android:padding="15dp"
-                        android:text="@string/pension"
-                        android:textColor="#ffffff" />
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:text="@string/entertainment"
+                        android:id="@+id/entertainment"/>
 
                     <TextView
-                        android:id="@+id/scholarship"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff086212"
-                        android:padding="15dp"
-                        android:text="@string/scholarship"
-                        android:textColor="#ffffff" />
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:text="@string/bills"
+                        android:id="@+id/bills"/>
 
                     <TextView
-                        android:id="@+id/other"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="#ff086212"
-                        android:padding="15dp"
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:text="@string/travel"
+                        android:id="@+id/travel"/>
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
+                        android:id="@+id/sport"
+                        android:text="@string/sport" />
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
                         android:text="@string/other"
-                        android:textColor="#ffffff" />
+                        android:id="@+id/other"/>
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>
@@ -82,7 +96,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7">
+        android:layout_weight="5">
 
         <ListView
             android:id="@+id/incomeList"

@@ -1,6 +1,7 @@
 package tp.hu.moneytracker.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class TileAdapter extends BaseAdapter {
         tv.setText(data.getTitles()[position]);
         ImageView iv = (ImageView) convertView.findViewById(R.id.tile_icon);
         iv.setImageResource(data.getIcons()[position]);
-
+        convertView.setBackgroundColor(Color.parseColor("#ff086212"));
         return convertView;
     }
 }

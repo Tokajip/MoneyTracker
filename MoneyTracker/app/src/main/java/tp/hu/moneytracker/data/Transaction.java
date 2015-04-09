@@ -1,9 +1,11 @@
 package tp.hu.moneytracker.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Peti on 2015.03.22..
  */
-public class Transaction {
+public class Transaction implements Serializable {
     private String title;
     private long date;
     private int price;
@@ -63,5 +65,10 @@ public class Transaction {
 
     public void setType(int i){
         type = i==0 ? transactionType.outgo : transactionType.income;
+    }
+
+    @Override
+    public String toString() {
+        return "title: "+getTitle()+" date: "+getDate()+" price: "+ getDate()+" type: "+getType()+" category: "+getCategory();
     }
 }

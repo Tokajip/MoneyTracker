@@ -4,11 +4,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
-import tp.hu.moneytracker.TransactionApplication;
-import tp.hu.moneytracker.activities.Main;
+import tp.hu.moneytracker.activities.Income;
+import tp.hu.moneytracker.activities.Outgo;
 import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 
@@ -23,37 +26,69 @@ public class ProcessPushNotification {
 
     public ProcessPushNotification(Context c){
         ctx=c;
-        dbLoader= TransactionApplication.getTransationDbLoader();
+        dbLoader= MoneyTrackerApplication.getTransationDbLoader();
     };
 
-    public void processDatas(String message){
+    public void processDatas(String message, Handler handler){
         Transaction t = HandleJSON.readString(message,ctx,Transaction.class);
-        sendNotification(t.getTitle());
-        if(t.getTitle().equalsIgnoreCase("Tesco")){
-            t.setCategory("Food");
-        }
-        else if(t.getTitle().equalsIgnoreCase("Nike")){
-            t.setCategory("Clothes");
-        }
+        Cursor cursor = dbLoader.fetchByTitle(t.getTitle());
+        categorization(cursor, t);
+        userNotify(t,handler);
         dbLoader.createTransition(t);
     }
-    private  void sendNotification(String msg) {
+
+    private  void sendNotification(Transaction t) {
         mNotificationManager = (NotificationManager)
                 ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0,
-                new Intent(ctx, Main.class), 0);
+        PendingIntent contentIntent = null;
+        if(t.getPrice()<0){
+            contentIntent = PendingIntent.getActivity(ctx, 0,
+                    new Intent(ctx, Outgo.class), 0);
+        }else {
+            contentIntent = PendingIntent.getActivity(ctx, 0,
+                    new Intent(ctx, Income.class), 0);
+        }
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(ctx)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle("MoneyTracker")
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
-                        .setContentText(msg);
+                                .bigText(t.getTitle()))
+                        .setContentText("A(z) "+t.getTitle()+" tranzakció be lett téve a(z) "+t.getCategory()+" kategóriába.");
 
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private void categorization(Cursor cursor,Transaction t){
+        if (cursor.moveToFirst()){
+            Transaction loaded =  TransactionDbLoader.getTransationByCursor(cursor);
+            t.setCategory(loaded.getCategory());
+        }
+        else{
+            t.setCategory("Other");
+
+        }
+    }
+    private void userNotify(final Transaction t, Handler handler) {
+        if(MoneyTrackerApplication.isActivityVisible()){
+            /*handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Dialog dialog = new Dialog(ctx);
+                    dialog.setContentView(R.layout.transaction_popup);
+                    TextView title = (TextView) dialog.findViewById(R.id.popup_title);
+                    title.setText(t.getTitle());
+                    dialog.show();
+                }
+            });*/
+            sendNotification(t);
+        }else{
+            sendNotification(t);
+        }
     }
 }

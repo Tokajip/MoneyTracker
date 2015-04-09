@@ -11,10 +11,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
-import tp.hu.moneytracker.TransactionApplication;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 
@@ -39,18 +41,34 @@ public class Outgo extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_income);
+        setContentView(R.layout.activity_outgo);
         list = (ListView) findViewById(R.id.incomeList);
 
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
-        dbLoader = TransactionApplication.getTransationDbLoader();
+        dbLoader = MoneyTrackerApplication.getTransationDbLoader();
 
-        refreshList();
+        refreshList("Food");
     }
-
+    private void categorySelection() {
+        TextView tv_food = (TextView) findViewById(R.id.food);
+        tv_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Food");
+            }
+        });
+        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
+        tv_clothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Clothes");
+            }
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        MoneyTrackerApplication.activityResumed();
 
         // Kódból regisztraljuk az adatbazis modosulasara figyelmezteto     Receiver-t
   /*      IntentFilter filter = new IntentFilter(
@@ -58,12 +76,13 @@ public class Outgo extends ActionBarActivity {
         lbm.registerReceiver(updateDbReceiver, filter);
 */
         // Frissitjuk a lista tartalmat, ha visszater a user
-        refreshList();
+        refreshList("Food");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MoneyTrackerApplication.activityPaused();
         // Kiregisztraljuk az adatbazis modosulasara figyelmezteto  Receiver-t
         lbm.unregisterReceiver(updateDbReceiver);
 
@@ -83,14 +102,14 @@ public class Outgo extends ActionBarActivity {
     }
 
 
-    private class GetAllTask extends AsyncTask<Void, Void, Cursor> {
+    private class GetAllTask extends AsyncTask<String, Void, Cursor> {
 
         private static final String TAG = "GetAllTask";
 
         @Override
-        protected Cursor doInBackground(Void... params) {
+        protected Cursor doInBackground(String[] params) {
             try {
-                Cursor result = dbLoader.fetchOutgoes();
+                Cursor result = dbLoader.fetchByCategory(params[0]);
 
                 if (!isCancelled()) {
                     return result;
@@ -132,17 +151,18 @@ public class Outgo extends ActionBarActivity {
     private BroadcastReceiver updateDbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            refreshList();
+            refreshList("Food");
         }
     };
 
-    private void refreshList() {
+    private void refreshList(String category) {
         if (getAllTask != null) {
             getAllTask.cancel(false);
         }
 
         getAllTask = new GetAllTask();
-        getAllTask.execute();
+        String[] params = new String[]{category};
+        getAllTask.execute(params);
     }
 
 
