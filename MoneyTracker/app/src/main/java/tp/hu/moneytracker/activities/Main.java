@@ -37,6 +37,9 @@ public class Main extends Activity {
                     case 1: intent = new Intent(getApplicationContext(), Outgo.class);
                             startActivity(intent);
                             return;
+                    case 2: intent = new Intent(getApplicationContext(), Date.class);
+                        startActivity(intent);
+                        return;
                     default:return;
                 }
             }

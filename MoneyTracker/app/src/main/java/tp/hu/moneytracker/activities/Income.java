@@ -49,21 +49,7 @@ public class Income extends ActionBarActivity{
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = TransactionApplication.getTransationDbLoader();
         refreshList("Food");
-        TextView tv_food = (TextView) findViewById(R.id.food);
-        tv_food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshList("Food");
-            }
-        });
-        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
-        tv_clothes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshList("Clothes");
-            }
-        });
-//        categorySelection();
+        categorySelection();
     }
 
     private void categorySelection() {

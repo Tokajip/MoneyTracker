@@ -4,13 +4,15 @@
     <string name="app_name">MoneyTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_income">Income</string>
-    <string name="title_activity_outgo">Outgo</string>
     <string name="tile_income">Bevétel</string>
     <string name="tile_outgo">Kiadás</string>
     <string name="tile_date">Dátumra szűrés</string>
     <string name="tile_settings">Beállítások</string>
     <string name="food">Élelmiszer</string>
     <string name="clothes">Ruházat</string>
+    <string name="today">Ma</string>
+    <string name="day">Napra</string>
+    <string name="month">Hónapra</string>
+    <string name="year">Évre</string>
 
 </resources>
