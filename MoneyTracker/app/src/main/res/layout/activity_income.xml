@@ -67,14 +67,14 @@
                         android:text="@string/scholarship" />
 
                     <TextView
-                        android:id="@+id/other"
+                        android:id="@+id/other_income"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="#ffffff"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="3dp"
                         android:background="#ff086212"
                         android:padding="10dp"
-                        android:text="@string/other" />
+                        android:text="@string/other_income" />
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>

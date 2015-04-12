@@ -80,13 +80,13 @@
                         android:text="@string/sport" />
 
                     <TextView
-                        android:id="@+id/other"
+                        android:id="@+id/other_outgo"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:background="#ff0000"
                         android:padding="15dp"
-                        android:text="@string/other" />
+                        android:text="@string/other_outgo" />
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>

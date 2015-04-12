@@ -19,11 +19,29 @@
     <string name="bills">Számlák</string>
     <string name="travel">Utazás</string>
     <string name="sport">Sport</string>
-    <string name="other">Egyéb</string>
+    <string name="other_outgo">Egyéb kiadás</string>
     <string name="salary">Fizetés</string>
     <string name="pocketmoney">Zsebpénz</string>
     <string name="pension">Nyugdíj</string>
     <string name="scholarship">Ösztöndíj</string>
     <string name="action_share">Megosztás</string>
-
+    <string name="other_income">Egyéb bevétel</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Mégse</string>
+    <string-array name="categories_income">
+        <item>@string/salary</item>
+        <item>@string/pocketmoney</item>
+        <item>@string/pension</item>
+        <item>@string/scholarship</item>
+        <item>@string/other_income</item>
+    </string-array>
+    <string-array name="categories_outgo">
+        <item>@string/food</item>
+        <item>@string/clothes</item>
+        <item>@string/entertainment</item>
+        <item>@string/bills</item>
+        <item>@string/travel</item>
+        <item>@string/sport</item>
+        <item>@string/other_outgo</item>
+    </string-array>
 </resources>

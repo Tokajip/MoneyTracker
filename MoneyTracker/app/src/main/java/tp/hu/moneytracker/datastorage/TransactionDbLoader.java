@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.db.DatabaseHelper;
 import tp.hu.moneytracker.db.DbConstants;
 
@@ -169,5 +170,17 @@ public class TransactionDbLoader {
                     new String[]{parameter}, null, null, DbConstants.Transaction.KEY_TITLE
             );
             return c;
+    }
+    public boolean update(Transaction t){
+        ContentValues values = new ContentValues();
+        values.put(DbConstants.Transaction.KEY_TITLE, t.getTitle());
+        values.put(DbConstants.Transaction.KEY_DATE, t.getDate());
+        values.put(DbConstants.Transaction.KEY_PRICE, t.getPrice());
+        values.put(DbConstants.Transaction.KEY_CATEGORY, t.getCategory());
+        return mDb.update(
+                DbConstants.Transaction.DATABASE_TABLE,
+                values,
+                DbConstants.Transaction.KEY_DATE + "=" + t.getDate(),
+                null) > 0;
     }
 }

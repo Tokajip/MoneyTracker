@@ -24,28 +24,30 @@ public class ProcessPushNotification {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
 
-    public ProcessPushNotification(Context c){
-        ctx=c;
-        dbLoader= MoneyTrackerApplication.getTransationDbLoader();
-    };
+    public ProcessPushNotification(Context c) {
+        ctx = c;
+        dbLoader = MoneyTrackerApplication.getTransationDbLoader();
+    }
 
-    public void processDatas(String message, Handler handler){
-        Transaction t = HandleJSON.readString(message,ctx,Transaction.class);
+    ;
+
+    public void processDatas(String message, Handler handler) {
+        Transaction t = HandleJSON.readString(message, ctx, Transaction.class);
         Cursor cursor = dbLoader.fetchByTitle(t.getTitle());
         categorization(cursor, t);
-        userNotify(t,handler);
+        userNotify(t, handler);
         dbLoader.createTransition(t);
     }
 
-    private  void sendNotification(Transaction t) {
+    private void sendNotification(Transaction t) {
         mNotificationManager = (NotificationManager)
                 ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = null;
-        if(t.getPrice()<0){
+        if (t.getPrice() < 0) {
             contentIntent = PendingIntent.getActivity(ctx, 0,
                     new Intent(ctx, Outgo.class), 0);
-        }else {
+        } else {
             contentIntent = PendingIntent.getActivity(ctx, 0,
                     new Intent(ctx, Income.class), 0);
         }
@@ -57,25 +59,37 @@ public class ProcessPushNotification {
                         .setContentTitle("MoneyTracker")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(t.getTitle()))
-                        .setContentText("A(z) "+t.getTitle()+" tranzakció be lett téve a(z) "+t.getCategory()+" kategóriába.");
+                        .setContentText("A(z) " + t.getTitle() + " tranzakció be lett téve a(z) " + t.getCategory() + " kategóriába.");
 
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private void categorization(Cursor cursor,Transaction t){
-        if (cursor.moveToFirst()){
-            Transaction loaded =  TransactionDbLoader.getTransationByCursor(cursor);
-            t.setCategory(loaded.getCategory());
-        }
-        else{
-            t.setCategory("Other");
+    private void categorization(Cursor cursor, Transaction t) {
+        if (cursor.moveToFirst()) {
+            Transaction loaded = TransactionDbLoader.getTransationByCursor(cursor);
+            if (!(loaded.getCategory().equalsIgnoreCase("Egyéb kiadás") || loaded.getCategory().equalsIgnoreCase("Egyéb bevétel"))) {
+                t.setCategory(loaded.getCategory());
+            } else {
+                if (t.getPrice() < 0) {
+                    t.setCategory("Egyéb kiadás");
+                } else {
+                    t.setCategory("Egyéb bevétel");
+                }
+            }
+        } else {
+            if (t.getPrice() < 0) {
+                t.setCategory("Egyéb kiadás");
+            } else {
+                t.setCategory("Egyéb bevétel");
+            }
 
         }
     }
+
     private void userNotify(final Transaction t, Handler handler) {
-        if(MoneyTrackerApplication.isActivityVisible()){
+        if (MoneyTrackerApplication.isActivityVisible()) {
             /*handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -87,7 +101,7 @@ public class ProcessPushNotification {
                 }
             });*/
             sendNotification(t);
-        }else{
+        } else {
             sendNotification(t);
         }
     }

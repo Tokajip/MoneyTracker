@@ -1,5 +1,6 @@
 package tp.hu.moneytracker.activities;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +13,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
+import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 
 
@@ -34,6 +41,7 @@ public class Outgo extends ActionBarActivity {
     private GetAllTask getAllTask;
     private ListView list;
     private TransactionAdapter adapter;
+    private Context ctx;
 
     public Outgo() {
     }
@@ -43,28 +51,114 @@ public class Outgo extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outgo);
         list = (ListView) findViewById(R.id.incomeList);
-
+        ctx = Outgo.this;
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();
 
         refreshList("Food");
+        categorySelection();
+        lisItemClick();
     }
+
+    private void lisItemClick() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Transaction selectedTran = (Transaction) parent.getItemAtPosition(position);
+                createCategoryView(selectedTran);
+            }
+        });
+    }
+
+    private void createCategoryView(final Transaction selectedTran) {
+        final Dialog dialog = new Dialog(ctx);
+        dialog.setContentView(R.layout.category_selection);
+        dialog.setTitle(selectedTran.getTitle());
+        final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.categories_outgo, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        Button ok = (Button) dialog.findViewById(R.id.btn_ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTran.setCategory((String)spinner.getSelectedItem());
+                if(dbLoader.update(selectedTran)){
+                    Toast.makeText(ctx,"Sikeres kategória váláts",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(ctx,"Sikertelen kategória váláts",Toast.LENGTH_LONG).show();
+
+                }
+                dialog.dismiss();
+                refreshList((String)spinner.getSelectedItem());
+            }
+        });
+        Button cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     private void categorySelection() {
         TextView tv_food = (TextView) findViewById(R.id.food);
         tv_food.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Food");
+                refreshList("Élelmiszer");
             }
         });
         TextView tv_clothes = (TextView) findViewById(R.id.clothes);
         tv_clothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Clothes");
+                refreshList("Ruházat");
+            }
+        });
+        TextView tv_ent = (TextView) findViewById(R.id.entertainment);
+        tv_ent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Szórakozás");
+            }
+        });
+        TextView tv_bill = (TextView) findViewById(R.id.bills);
+        tv_bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Számlák");
+            }
+        });
+        TextView tv_travel = (TextView) findViewById(R.id.travel);
+        tv_travel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Utazás");
+            }
+        });
+        TextView tv_sport = (TextView) findViewById(R.id.sport);
+        tv_sport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Sport");
+            }
+        });
+        TextView tv_other = (TextView) findViewById(R.id.other_outgo);
+        tv_other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("Egyéb kiadás");
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
