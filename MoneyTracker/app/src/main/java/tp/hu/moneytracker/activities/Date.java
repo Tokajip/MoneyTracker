@@ -1,5 +1,8 @@
 package tp.hu.moneytracker.activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,20 +15,35 @@ import android.widget.Toast;
 
 import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
+import tp.hu.moneytracker.fragments.MonthListFragment;
 
 public class Date extends ActionBarActivity {
 
     private ListView listView;
+    private Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date);
-        listView = (ListView) findViewById(R.id.monthList);
+        ctx = Date.this;
+        getOption();
 
-        optionSelection();
     }
 
+    private void getOption() {
+        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        TextView tv_food = (TextView) findViewById(R.id.month);
+        tv_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentTransaction.add(R.id.date_frame, new MonthListFragment());
+                fragmentTransaction.commit();
+
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,12 +66,13 @@ public class Date extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     private void optionSelection() {
         TextView tv_food = (TextView) findViewById(R.id.month);
         tv_food.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] values = new String[] { "Január",
+                String[] values = new String[]{"Január",
                         "Február",
                         "Március",
                         "Április",
@@ -66,14 +85,14 @@ public class Date extends ActionBarActivity {
                         "November",
                         "December"
                 };
-                listView.setAdapter(new ArrayAdapter<String>(Date.this,R.layout.transation_item, R.id.transation_item_title, values));
+                listView.setAdapter(new ArrayAdapter<String>(Date.this, R.layout.transation_item, R.id.transation_item_title, values));
             }
         });
         TextView tv_clothes = (TextView) findViewById(R.id.today);
         tv_clothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_LONG).show();
             }
         });
     }

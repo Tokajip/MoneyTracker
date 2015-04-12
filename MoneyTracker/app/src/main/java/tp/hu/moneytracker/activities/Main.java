@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
@@ -31,17 +32,24 @@ public class Main extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0: Intent intent = new Intent(getApplicationContext(), Income.class);
-                            startActivity(intent);
-                            return;
-                    case 1: intent = new Intent(getApplicationContext(), Outgo.class);
-                            startActivity(intent);
-                            return;
-                    case 2: intent = new Intent(getApplicationContext(), Date.class);
+                switch (position) {
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), Income.class);
                         startActivity(intent);
                         return;
-                    default:return;
+                    case 1:
+                        intent = new Intent(getApplicationContext(), Outgo.class);
+                        startActivity(intent);
+                        return;
+                    case 2: intent = new Intent(getApplicationContext(), Date.class);
+                        startActivity(intent);
+//                        Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
+                        return;
+                    case 3:
+                        Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
+                        return;
+                    default:
+                        Toast.makeText(ctx,"Fejlesztés alatt",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -64,7 +72,7 @@ public class Main extends Activity {
                 startActivity(intent);
             }
         });*/
-        }
+    }
 
     @Override
     protected void onResume() {
