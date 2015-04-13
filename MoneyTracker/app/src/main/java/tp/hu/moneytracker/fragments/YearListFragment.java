@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,35 +23,25 @@ import tp.hu.moneytracker.R;
 /**
  * Created by Peti on 2015.04.12..
  */
-public class MonthListFragment extends Fragment {
+public class YearListFragment extends Fragment {
 
 
-    private ListView list;
+    private FragmentManager fragmentManager;
     private Context ctx;
-    FragmentManager fragmentManager;
+    private ListView list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        fragmentManager=getFragmentManager();
+        fragmentManager = getFragmentManager();
         ctx = getActivity().getApplicationContext();
         View view = View.inflate(getActivity(), R.layout.fragment_list, null);
         list = (ListView) view.findViewById(R.id.frag_list);
         lisItemClick();
 
-        String[] values = new String[]{"Január",
-                "Február",
-                "Március",
-                "Április",
-                "Május",
-                "Június",
-                "Július",
-                "Augusztus",
-                "Szeptember",
-                "Október",
-                "November",
-                "December"
-        };
+        String[] values = new String[]{"2015",
+                "2014",
+                "2013"};
         list.setAdapter(new ArrayAdapter<String>(container.getContext(), R.layout.fragment_list_item, R.id.fragment_list_title, values));
         return view;
     }
@@ -58,15 +50,17 @@ public class MonthListFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadListByDate(getMonth(position));
+                int year = Integer.parseInt(((TextView) view.findViewById(R.id.fragment_list_title)).getText().toString());
+                loadListByDate(getYear(year));
             }
         });
     }
 
-    private java.util.Date getMonth(int month) {
+    private java.util.Date getYear(int year) {
         Calendar date = new GregorianCalendar();
 // reset hour, minutes, seconds and millis
-        date.set(Calendar.MONTH,month);
+        date.set(Calendar.YEAR, year);
+        date.set(Calendar.MONTH, 0);
         date.set(Calendar.DAY_OF_MONTH, 1);
         date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);
@@ -74,22 +68,25 @@ public class MonthListFragment extends Fragment {
         date.set(Calendar.MILLISECOND, 0);
         return date.getTime();
     }
+
     private void loadListByDate(java.util.Date date) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         TransactionListFragment list_frag = new TransactionListFragment();
         Bundle arg = new Bundle();
         arg.putLong("min", date.getTime());
-        arg.putLong("max", nextMonth(date));
+        arg.putLong("max", nextYear(date));
         list_frag.setArguments(arg);
-        Log.i("MonthFragment",date.getTime()+" "+nextMonth(date));
+        Toast.makeText(ctx, date.getTime() + " " + nextYear(date), Toast.LENGTH_LONG).show();
+        Log.i("MonthFragment", date.getTime() + " " + nextYear(date));
         fragmentTransaction.replace(R.id.date_frame, list_frag);
         fragmentTransaction.commit();
     }
-    public static long nextMonth(java.util.Date date) {
+
+    public static long nextYear(java.util.Date date) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.YEAR, 1);
         return cal.getTime().getTime();
     }
 }

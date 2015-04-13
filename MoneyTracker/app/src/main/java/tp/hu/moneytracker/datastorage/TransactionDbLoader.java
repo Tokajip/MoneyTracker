@@ -183,4 +183,18 @@ public class TransactionDbLoader {
                 DbConstants.Transaction.KEY_DATE + "=" + t.getDate(),
                 null) > 0;
     }
+
+    public Cursor fetchByDate(String mindate,String  maxdate) {
+        Cursor c = mDb.query(DbConstants.Transaction.DATABASE_TABLE,
+                new String[]{
+                        DbConstants.Transaction.KEY_ROWID,
+                        DbConstants.Transaction.KEY_TITLE,
+                        DbConstants.Transaction.KEY_DATE,
+                        DbConstants.Transaction.KEY_PRICE,
+                        DbConstants.Transaction.KEY_CATEGORY
+                }, DbConstants.Transaction.KEY_DATE + " BETWEEN ? and ?",
+                new String[]{mindate,maxdate}, null, null, DbConstants.Transaction.KEY_TITLE
+        );
+        return c;
+    }
 }

@@ -1,26 +1,35 @@
 package tp.hu.moneytracker.activities;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.fragments.MonthListFragment;
+import tp.hu.moneytracker.fragments.TransactionListFragment;
+import tp.hu.moneytracker.fragments.YearListFragment;
 
 public class Date extends ActionBarActivity {
 
     private ListView listView;
     private Context ctx;
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +41,70 @@ public class Date extends ActionBarActivity {
     }
 
     private void getOption() {
-        FragmentManager fragmentManager = getFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        TextView tv_food = (TextView) findViewById(R.id.month);
-        tv_food.setOnClickListener(new View.OnClickListener() {
+        TextView tv_month = (TextView) findViewById(R.id.month);
+        tv_month.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentTransaction.add(R.id.date_frame, new MonthListFragment());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.date_frame, new MonthListFragment());
                 fragmentTransaction.commit();
 
             }
         });
+        TextView tv_year = (TextView) findViewById(R.id.year);
+        tv_year.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.date_frame, new YearListFragment());
+                fragmentTransaction.commit();
+            }
+        });
+        TextView tv_day = (TextView) findViewById(R.id.day);
+        tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCalendar();
+            }
+        });
+        TextView tv_today = (TextView) findViewById(R.id.today);
+        tv_today.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ctx, getToday() + "", Toast.LENGTH_LONG).show();
+                loadListByDate(getToday());
+            }
+        });
+    }
+
+    private void handleCalendar() {
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        caldroidFragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.date_frame, caldroidFragment);
+        fragmentTransaction.commit();
+        CaldroidListener listener = new CaldroidListener() {
+            @Override
+            public void onSelectDate(java.util.Date date, View view) {
+                loadListByDate(date);
+            }
+        };
+        caldroidFragment.setCaldroidListener(listener);
+    }
+
+    private void loadListByDate(java.util.Date date) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        TransactionListFragment list_frag = new TransactionListFragment();
+        Bundle arg = new Bundle();
+        arg.putLong("min", date.getTime());
+        arg.putLong("max", nextDay(date));
+        list_frag.setArguments(arg);
+        fragmentTransaction.replace(R.id.date_frame, list_frag);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -67,35 +129,6 @@ public class Date extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void optionSelection() {
-        TextView tv_food = (TextView) findViewById(R.id.month);
-        tv_food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] values = new String[]{"Január",
-                        "Február",
-                        "Március",
-                        "Április",
-                        "Május",
-                        "Június",
-                        "Július",
-                        "Augusztus",
-                        "Szeptember",
-                        "Október",
-                        "November",
-                        "December"
-                };
-                listView.setAdapter(new ArrayAdapter<String>(Date.this, R.layout.transation_item, R.id.transation_item_title, values));
-            }
-        });
-        TextView tv_clothes = (TextView) findViewById(R.id.today);
-        tv_clothes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
     @Override
     protected void onPostResume() {
@@ -107,5 +140,23 @@ public class Date extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         MoneyTrackerApplication.activityPaused();
+    }
+
+    public static long nextDay(java.util.Date date) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return ((java.util.Date) cal.getTime()).getTime();
+    }
+
+    private java.util.Date getToday() {
+        Calendar date = new GregorianCalendar();
+// reset hour, minutes, seconds and millis
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        return date.getTime();
     }
 }
