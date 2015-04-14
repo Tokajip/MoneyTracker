@@ -28,6 +28,7 @@
     <string name="other_income">Egyéb bevétel</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Mégse</string>
+    <string name="atm">ATM</string>
     <string-array name="categories_income">
         <item>@string/salary</item>
         <item>@string/pocketmoney</item>

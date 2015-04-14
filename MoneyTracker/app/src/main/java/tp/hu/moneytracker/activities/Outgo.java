@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -42,7 +43,7 @@ public class Outgo extends ActionBarActivity {
     private ListView list;
     private TransactionAdapter adapter;
     private Context ctx;
-
+    private TextView selected;
     public Outgo() {
     }
 
@@ -55,7 +56,6 @@ public class Outgo extends ActionBarActivity {
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();
 
-        refreshList("Food");
         categorySelection();
         lisItemClick();
     }
@@ -94,7 +94,6 @@ public class Outgo extends ActionBarActivity {
 
                 }
                 dialog.dismiss();
-                refreshList((String)spinner.getSelectedItem());
             }
         });
         Button cancel = (Button) dialog.findViewById(R.id.btn_cancel);
@@ -108,53 +107,61 @@ public class Outgo extends ActionBarActivity {
     }
 
     private void categorySelection() {
-        TextView tv_food = (TextView) findViewById(R.id.food);
+        final TextView tv_food = (TextView) findViewById(R.id.food);
         tv_food.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Élelmiszer");
+                refreshList("Élelmiszer",tv_food);
             }
         });
-        TextView tv_clothes = (TextView) findViewById(R.id.clothes);
+        final TextView tv_clothes = (TextView) findViewById(R.id.clothes);
         tv_clothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Ruházat");
+                refreshList("Ruházat",tv_clothes);
             }
         });
-        TextView tv_ent = (TextView) findViewById(R.id.entertainment);
+        final TextView tv_ent = (TextView) findViewById(R.id.entertainment);
         tv_ent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Szórakozás");
+                refreshList("Szórakozás",tv_ent);
             }
         });
-        TextView tv_bill = (TextView) findViewById(R.id.bills);
+        final TextView tv_bill = (TextView) findViewById(R.id.bills);
         tv_bill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Számlák");
+                refreshList("Számlák",tv_bill);
             }
         });
-        TextView tv_travel = (TextView) findViewById(R.id.travel);
+        final TextView tv_travel = (TextView) findViewById(R.id.travel);
         tv_travel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Utazás");
+                refreshList("Utazás",tv_travel);
             }
         });
-        TextView tv_sport = (TextView) findViewById(R.id.sport);
+        final TextView tv_sport = (TextView) findViewById(R.id.sport);
         tv_sport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Sport");
+                refreshList("Sport",tv_sport);
             }
         });
-        TextView tv_other = (TextView) findViewById(R.id.other_outgo);
+        final TextView tv_atm = (TextView) findViewById(R.id.atm);
+        tv_atm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshList("ATM",tv_atm);
+            }
+        });
+        final TextView tv_other = (TextView) findViewById(R.id.other_outgo);
         tv_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Egyéb kiadás");
+                refreshList("Egyéb kiadás",tv_other);
+                ;
             }
         });
     }
@@ -170,7 +177,6 @@ public class Outgo extends ActionBarActivity {
         lbm.registerReceiver(updateDbReceiver, filter);
 */
         // Frissitjuk a lista tartalmat, ha visszater a user
-        refreshList("Food");
     }
 
     @Override
@@ -178,7 +184,6 @@ public class Outgo extends ActionBarActivity {
         super.onPause();
         MoneyTrackerApplication.activityPaused();
         // Kiregisztraljuk az adatbazis modosulasara figyelmezteto  Receiver-t
-        lbm.unregisterReceiver(updateDbReceiver);
 
         if (getAllTask != null) {
             getAllTask.cancel(false);
@@ -242,14 +247,9 @@ public class Outgo extends ActionBarActivity {
 
     }
 
-    private BroadcastReceiver updateDbReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            refreshList("Food");
-        }
-    };
 
-    private void refreshList(String category) {
+    private void refreshList(String category,TextView textView) {
+        setSelectionColor(textView);
         if (getAllTask != null) {
             getAllTask.cancel(false);
         }
@@ -281,5 +281,16 @@ public class Outgo extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void setSelectionColor(TextView now){
+        if(selected==null){
+            selected=now;
+            selected.setTextColor(Color.WHITE);
+        }
+        else{
+            selected.setTextColor(Color.BLACK);
+            selected=now;
+            selected.setTextColor(Color.WHITE);
+        }
     }
 }

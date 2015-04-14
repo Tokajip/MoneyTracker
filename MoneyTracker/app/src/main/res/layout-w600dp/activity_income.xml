@@ -72,7 +72,7 @@
                         android:layout_margin="5dp"
                         android:background="#ff086212"
                         android:padding="15dp"
-                        android:text= "@string/other_income"
+                        android:text="@string/other_income"
                         android:textColor="#ffffff" />
                 </TableRow>
             </TableLayout>

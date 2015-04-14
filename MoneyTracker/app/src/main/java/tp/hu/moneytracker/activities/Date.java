@@ -159,4 +159,14 @@ public class Date extends ActionBarActivity {
         date.set(Calendar.MILLISECOND, 0);
         return date.getTime();
     }
+
+    @Override
+    public void onBackPressed() {
+        if( fragmentManager.getBackStackEntryCount() != 0 ){
+            fragmentManager.popBackStackImmediate();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
 }

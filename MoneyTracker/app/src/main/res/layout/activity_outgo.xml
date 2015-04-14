@@ -33,7 +33,7 @@
                         android:background="#ff0000"
                         android:padding="10dp"
                         android:text="@string/food"
-                        android:id="@+id/food"/>
+                        android:id="@+id/food" />
 
                     <TextView
                         android:id="@+id/clothes"
@@ -42,7 +42,7 @@
                         android:layout_margin="3dp"
                         android:background="#ff0000"
                         android:padding="10dp"
-                        android:text="@string/clothes"/>
+                        android:text="@string/clothes" />
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"
@@ -51,7 +51,7 @@
                         android:background="#ff0000"
                         android:padding="10dp"
                         android:text="@string/entertainment"
-                        android:id="@+id/entertainment"/>
+                        android:id="@+id/entertainment" />
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"
@@ -60,7 +60,7 @@
                         android:background="#ff0000"
                         android:padding="10dp"
                         android:text="@string/bills"
-                        android:id="@+id/bills"/>
+                        android:id="@+id/bills" />
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"
@@ -69,7 +69,7 @@
                         android:background="#ff0000"
                         android:padding="10dp"
                         android:text="@string/travel"
-                        android:id="@+id/travel"/>
+                        android:id="@+id/travel" />
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"
@@ -86,8 +86,18 @@
                         android:layout_margin="3dp"
                         android:background="#ff0000"
                         android:padding="10dp"
+                        android:id="@+id/atm"
+                        android:text="@string/atm" />
+
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="3dp"
+                        android:background="#ff0000"
+                        android:padding="10dp"
                         android:text="@string/other_outgo"
-                        android:id="@+id/other_outgo"/>
+                        android:id="@+id/other_outgo" />
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>
