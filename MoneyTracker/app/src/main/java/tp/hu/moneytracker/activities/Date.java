@@ -1,16 +1,15 @@
 package tp.hu.moneytracker.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -29,6 +28,7 @@ public class Date extends ActionBarActivity {
     private ListView listView;
     private Context ctx;
     FragmentManager fragmentManager = getSupportFragmentManager();
+    private TextView selected;
 
 
     @Override
@@ -48,6 +48,7 @@ public class Date extends ActionBarActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.date_frame, new MonthListFragment());
                 fragmentTransaction.commit();
+                setSelectionColor((TextView) v);
 
             }
         });
@@ -58,20 +59,23 @@ public class Date extends ActionBarActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.date_frame, new YearListFragment());
                 fragmentTransaction.commit();
+                setSelectionColor((TextView) v);
             }
         });
         TextView tv_day = (TextView) findViewById(R.id.day);
         tv_day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setSelectionColor((TextView) v);
                 handleCalendar();
+
             }
         });
         TextView tv_today = (TextView) findViewById(R.id.today);
         tv_today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ctx, getToday() + "", Toast.LENGTH_LONG).show();
+                setSelectionColor((TextView) v);
                 loadListByDate(getToday());
             }
         });
@@ -103,32 +107,13 @@ public class Date extends ActionBarActivity {
         arg.putLong("min", date.getTime());
         arg.putLong("max", nextDay(date));
         list_frag.setArguments(arg);
-        fragmentTransaction.replace(R.id.date_frame, list_frag);
+        if(selected.getText().equals("Napra")){
+            fragmentTransaction.replace(R.id.date_frame, list_frag, "list");
+        }else {
+            fragmentTransaction.replace(R.id.date_frame, list_frag);
+        }
         fragmentTransaction.commit();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_date, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     protected void onPostResume() {
@@ -160,13 +145,25 @@ public class Date extends ActionBarActivity {
         return date.getTime();
     }
 
+    private void setSelectionColor(TextView now) {
+        if (selected == null) {
+            selected = now;
+            selected.setTextColor(Color.WHITE);
+        } else {
+            selected.setTextColor(Color.BLACK);
+            selected = now;
+            selected.setTextColor(Color.WHITE);
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        if( fragmentManager.getBackStackEntryCount() != 0 ){
-            fragmentManager.popBackStackImmediate();
+        if (fragmentManager.findFragmentByTag("list") != null) {
+            selected.performClick();
+        } else {
+            Intent intent = new Intent(getApplicationContext(),Main.class);
+            startActivity(intent);
         }
-        else {
-            super.onBackPressed();
-        }
+
     }
 }

@@ -16,7 +16,7 @@ import tp.hu.moneytracker.data.TileDatas;
 import tp.hu.moneytracker.gcm.GCMRegistrator;
 
 
-public class Main extends Activity {
+public class Main extends Activity{
 
 
     private Context ctx;
@@ -41,15 +41,15 @@ public class Main extends Activity {
                         intent = new Intent(getApplicationContext(), Outgo.class);
                         startActivity(intent);
                         return;
-                    case 2: intent = new Intent(getApplicationContext(), Date.class);
+                    case 2:
+                        intent = new Intent(getApplicationContext(), Date.class);
                         startActivity(intent);
-//                        Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
                         return;
                     case 3:
                         Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
                         return;
                     default:
-                        Toast.makeText(ctx,"Fejlesztés alatt",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
                 }
             }
         });

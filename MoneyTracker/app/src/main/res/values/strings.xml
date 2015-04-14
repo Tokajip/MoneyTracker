@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">MoneyTracker</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="tile_income">Bevétel</string>
     <string name="tile_outgo">Kiadás</string>

@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,6 +43,7 @@ public class Income extends ActionBarActivity {
     private ListView list;
     private TransactionAdapter adapter;
     private Context ctx;
+    private TextView selected;
 
     public Income() {
     }
@@ -52,7 +52,7 @@ public class Income extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
-        list = (ListView) findViewById(R.id.incomeList);
+        list = (ListView) findViewById(R.id.list);
         ctx = Income.this;
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();
@@ -74,13 +74,13 @@ public class Income extends ActionBarActivity {
         final Dialog dialog = new Dialog(ctx);
         dialog.setContentView(R.layout.category_selection);
         dialog.setTitle(selectedTran.getTitle());
+
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories_income, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+                R.array.categories_income, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_checkeditem);
         spinner.setAdapter(adapter);
+
         Button ok = (Button) dialog.findViewById(R.id.btn_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +90,12 @@ public class Income extends ActionBarActivity {
                     Toast.makeText(ctx, "Sikeres kategória váltás", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(ctx, "Sikertelen kategória váltás", Toast.LENGTH_LONG).show();
-
                 }
+                selected.performClick();
                 dialog.dismiss();
-                refreshList((String) spinner.getSelectedItem());
             }
         });
+
         Button cancel = (Button) dialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,35 +111,35 @@ public class Income extends ActionBarActivity {
         tv_salary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Fizetás");
+                refreshList("Fizetés", (TextView) v);
             }
         });
         TextView tv_pocketmoney = (TextView) findViewById(R.id.pocketmoney);
         tv_pocketmoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Zsebpénz");
+                refreshList("Zsebpénz", (TextView) v);
             }
         });
         TextView tv_pension = (TextView) findViewById(R.id.pension);
         tv_pension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Nyugdíj");
+                refreshList("Nyugdíj", (TextView) v);
             }
         });
         TextView tv_scholarship = (TextView) findViewById(R.id.scholarship);
         tv_scholarship.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Ösztöndíj");
+                refreshList("Ösztöndíj", (TextView) v);
             }
         });
         TextView tv_other = (TextView) findViewById(R.id.other_income);
         tv_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshList("Egyéb bevétel");
+                refreshList("Egyéb bevétel", (TextView) v);
             }
         });
     }
@@ -228,11 +228,11 @@ public class Income extends ActionBarActivity {
     private BroadcastReceiver updateDbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            refreshList("Salary");
         }
     };
 
-    private void refreshList(String category) {
+    private void refreshList(String category, TextView selected) {
+        setSelectionColor(selected);
         if (getAllTask != null) {
             getAllTask.cancel(false);
         }
@@ -242,6 +242,7 @@ public class Income extends ActionBarActivity {
         getAllTask.execute(params);
     }
 
+/*
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -281,6 +282,7 @@ public class Income extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+*/
 
     private String getMyStringMessage(String[] arr) {
         StringBuilder builder = new StringBuilder();
@@ -290,4 +292,20 @@ public class Income extends ActionBarActivity {
         return builder.toString();
     }
 
+    private void setSelectionColor(TextView now) {
+        if (selected == null) {
+            selected = now;
+            selected.setTextColor(Color.BLACK);
+        } else {
+            selected.setTextColor(Color.WHITE);
+            selected = now;
+            selected.setTextColor(Color.BLACK);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),Main.class);
+        startActivity(intent);
+    }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +80,7 @@ public class MonthListFragment extends Fragment {
         arg.putLong("min", date.getTime());
         arg.putLong("max", nextMonth(date));
         list_frag.setArguments(arg);
-        Log.i("MonthFragment",date.getTime()+" "+nextMonth(date));
-        fragmentTransaction.replace(R.id.date_frame, list_frag);
+        fragmentTransaction.replace(R.id.date_frame, list_frag,"list");
         fragmentTransaction.commit();
     }
     public static long nextMonth(java.util.Date date) {

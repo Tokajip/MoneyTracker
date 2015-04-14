@@ -82,7 +82,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_DATE,
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
-                }, null, null, null, null, DbConstants.Transaction.KEY_TITLE);
+                }, null, null, null, null, DbConstants.Transaction.KEY_DATE+" DESC");
     }
 
     public Cursor fetchByTitle(String parameter) {
@@ -94,7 +94,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
                 }, DbConstants.Transaction.KEY_TITLE + " like ?",
-                new String[]{parameter}, null, null, DbConstants.Transaction.KEY_TITLE
+                new String[]{parameter}, null, null, DbConstants.Transaction.KEY_DATE+" DESC"
         );
         return c;
     }
@@ -107,7 +107,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
                 }, DbConstants.Transaction.KEY_PRICE + "> 0",
-                null, null, null, DbConstants.Transaction.KEY_TITLE
+                null, null, null, DbConstants.Transaction.KEY_DATE+" DESC"
         );
         return c;
     }
@@ -120,7 +120,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
                 }, DbConstants.Transaction.KEY_PRICE + "< 0",
-                null, null, null, DbConstants.Transaction.KEY_TITLE
+                null, null, null, DbConstants.Transaction.KEY_DATE+" DESC"
         );
         return c;
     }
@@ -137,7 +137,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
                 }, DbConstants.Transaction.KEY_ROWID + "=?",
-                new String[]{"" + rowId}, null, null, DbConstants.Transaction.KEY_TITLE);
+                new String[]{"" + rowId}, null, null, DbConstants.Transaction.KEY_DATE+" DESC");
         // ha van rekord amire a Cursor mutat
         if (c.moveToFirst())
             return getTransationByCursor(c);
@@ -167,7 +167,7 @@ public class TransactionDbLoader {
                             DbConstants.Transaction.KEY_PRICE,
                             DbConstants.Transaction.KEY_CATEGORY
                     }, DbConstants.Transaction.KEY_CATEGORY + " like ?",
-                    new String[]{parameter}, null, null, DbConstants.Transaction.KEY_TITLE
+                    new String[]{parameter}, null, null, DbConstants.Transaction.KEY_DATE+" DESC"
             );
             return c;
     }
@@ -193,7 +193,7 @@ public class TransactionDbLoader {
                         DbConstants.Transaction.KEY_PRICE,
                         DbConstants.Transaction.KEY_CATEGORY
                 }, DbConstants.Transaction.KEY_DATE + " BETWEEN ? and ?",
-                new String[]{mindate,maxdate}, null, null, DbConstants.Transaction.KEY_TITLE
+                new String[]{mindate,maxdate}, null, null, DbConstants.Transaction.KEY_DATE
         );
         return c;
     }

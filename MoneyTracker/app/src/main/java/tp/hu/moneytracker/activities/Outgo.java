@@ -1,7 +1,6 @@
 package tp.hu.moneytracker.activities;
 
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,8 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,7 +48,7 @@ public class Outgo extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outgo);
-        list = (ListView) findViewById(R.id.incomeList);
+        list = (ListView) findViewById(R.id.list);
         ctx = Outgo.this;
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();
@@ -74,28 +71,30 @@ public class Outgo extends ActionBarActivity {
         final Dialog dialog = new Dialog(ctx);
         dialog.setContentView(R.layout.category_selection);
         dialog.setTitle(selectedTran.getTitle());
+
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories_outgo, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+                R.array.categories_outgo, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_checkeditem);
         spinner.setAdapter(adapter);
+        spinner.setPadding(5,5,5,5);
+
         Button ok = (Button) dialog.findViewById(R.id.btn_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedTran.setCategory((String)spinner.getSelectedItem());
                 if(dbLoader.update(selectedTran)){
-                    Toast.makeText(ctx,"Sikeres kategória váláts",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx,"Sikeres kategória váltás",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(ctx,"Sikertelen kategória váláts",Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(ctx,"Sikertelen kategória váltás",Toast.LENGTH_LONG).show();
                 }
+                selected.performClick();
                 dialog.dismiss();
             }
         });
+
         Button cancel = (Button) dialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,29 +258,30 @@ public class Outgo extends ActionBarActivity {
         getAllTask.execute(params);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_income, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            dbLoader.deleteAll();
+    /*
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_income, menu);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {
+                dbLoader.deleteAll();
+                return true;
+            }
+
+            return super.onOptionsItemSelected(item);
+        }*/
     private void setSelectionColor(TextView now){
         if(selected==null){
             selected=now;
@@ -292,5 +292,12 @@ public class Outgo extends ActionBarActivity {
             selected=now;
             selected.setTextColor(Color.WHITE);
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),Main.class);
+        startActivity(intent);
     }
 }

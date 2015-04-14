@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -76,9 +74,7 @@ public class YearListFragment extends Fragment {
         arg.putLong("min", date.getTime());
         arg.putLong("max", nextYear(date));
         list_frag.setArguments(arg);
-        Toast.makeText(ctx, date.getTime() + " " + nextYear(date), Toast.LENGTH_LONG).show();
-        Log.i("MonthFragment", date.getTime() + " " + nextYear(date));
-        fragmentTransaction.replace(R.id.date_frame, list_frag);
+        fragmentTransaction.replace(R.id.date_frame, list_frag,"list");
         fragmentTransaction.commit();
     }
 
