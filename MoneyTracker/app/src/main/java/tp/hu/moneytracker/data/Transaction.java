@@ -13,6 +13,9 @@ public class Transaction implements Serializable {
     private transactionType type = transactionType.income;
 
     private enum transactionType {income, outgo};
+
+    public Transaction(){};
+
     public Transaction(String title, long date, int price, String cat) {
         this.title = title;
         this.date = date;
@@ -66,9 +69,9 @@ public class Transaction implements Serializable {
     public void setType(int i){
         type = i==0 ? transactionType.outgo : transactionType.income;
     }
-
+/*
     @Override
     public String toString() {
         return "title: "+getTitle()+" date: "+getDate()+" price: "+ getDate()+" type: "+getType()+" category: "+getCategory();
-    }
+    }*/
 }

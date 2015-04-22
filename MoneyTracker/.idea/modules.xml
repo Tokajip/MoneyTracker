@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MoneyTracker.iml" filepath="$PROJECT_DIR$/MoneyTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/moneytrackerserverapp/moneytrackerserverapp.iml" filepath="$PROJECT_DIR$/moneytrackerserverapp/moneytrackerserverapp.iml" />
     </modules>
   </component>
 </project>

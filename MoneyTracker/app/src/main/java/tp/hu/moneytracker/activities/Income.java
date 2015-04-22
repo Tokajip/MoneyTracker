@@ -53,6 +53,7 @@ public class Income extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
         list = (ListView) findViewById(R.id.list);
+        list.setEmptyView(findViewById(R.id.empty));
         ctx = Income.this;
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();

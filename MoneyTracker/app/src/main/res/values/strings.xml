@@ -28,6 +28,8 @@
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Mégse</string>
     <string name="atm">ATM</string>
+    <string name="empty_list">Nincs adat ilyen kereséshez</string>
+    <string name="sum">Összesen</string>
     <string-array name="categories_income">
         <item>@string/salary</item>
         <item>@string/pocketmoney</item>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import tp.hu.moneytracker.MoneyTrackerApplication;
 import tp.hu.moneytracker.R;
@@ -27,7 +28,8 @@ public class TransactionListFragment extends Fragment {
     private ListView list;
     private long min_date;
     private long max_date;
-
+    private int sum=0;
+    private TextView tv_sum;
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
@@ -37,10 +39,20 @@ public class TransactionListFragment extends Fragment {
 
         ctx = getActivity().getApplicationContext();
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();
-        View root = View.inflate(getActivity(), R.layout.fragment_list, null);
+        View root = View.inflate(getActivity(), R.layout.fragment_list_with_sum, null);
         list = (ListView) root.findViewById(R.id.frag_list);
+        list.setEmptyView(root.findViewById(R.id.empty));
         refreshList(min_date, max_date);
+
+        tv_sum = (TextView) root.findViewById(R.id.sum_text);
         return root;
+    }
+
+
+    private void getSum(Cursor cursor) {
+        while(cursor.moveToNext()){
+            sum+=TransactionDbLoader.getTransationByCursor(cursor).getPrice();
+        }
     }
 
     private void refreshList(long mindate, long maxdate) {
@@ -91,7 +103,8 @@ public class TransactionListFragment extends Fragment {
                 } else {
                     adapter.changeCursor(result);
                 }
-
+                getSum(result);
+                tv_sum.setText(String.valueOf(sum));
                 getAllTask = null;
             } catch (Exception e) {
                 Log.e(TAG, e.toString());

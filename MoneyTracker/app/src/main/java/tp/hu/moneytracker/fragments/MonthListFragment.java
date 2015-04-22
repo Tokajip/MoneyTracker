@@ -34,6 +34,7 @@ public class MonthListFragment extends Fragment {
         ctx = getActivity().getApplicationContext();
         View view = View.inflate(getActivity(), R.layout.fragment_list, null);
         list = (ListView) view.findViewById(R.id.frag_list);
+        list.setEmptyView(view.findViewById(R.id.empty));
         lisItemClick();
 
         String[] values = new String[]{"Január",

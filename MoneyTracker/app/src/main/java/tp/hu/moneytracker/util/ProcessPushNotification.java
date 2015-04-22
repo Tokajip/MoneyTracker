@@ -59,7 +59,7 @@ public class ProcessPushNotification {
                         .setContentTitle("MoneyTracker")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(t.getTitle()))
-                        .setContentText("A(z) " + t.getTitle() + " tranzakció be lett téve a(z) " + t.getCategory() + " kategóriába.");
+                        .setContentText(t.getCategory()+" kategóriába a(z) "+t.getTitle()+" tranzakció belett téve");
 
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);

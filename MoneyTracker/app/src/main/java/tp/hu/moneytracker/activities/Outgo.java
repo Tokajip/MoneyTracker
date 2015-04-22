@@ -49,6 +49,7 @@ public class Outgo extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outgo);
         list = (ListView) findViewById(R.id.list);
+        list.setEmptyView(findViewById(R.id.empty));
         ctx = Outgo.this;
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         dbLoader = MoneyTrackerApplication.getTransationDbLoader();

@@ -56,6 +56,9 @@ public class HandleJSON {
         }
         return  t ;
     }
-
+public static String toJSON(Transaction transaction){
+    Gson gson = new Gson();
+    return gson.toJson(transaction);
+}
 
 }

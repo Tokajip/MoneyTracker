@@ -32,8 +32,8 @@
                         android:layout_margin="5dp"
                         android:background="#ff086212"
                         android:padding="15dp"
-                        android:textColor="#ffffff"
-                        android:text="@string/salary" />
+                        android:text="@string/salary"
+                        android:textColor="#ffffff" />
 
                     <TextView
                         android:id="@+id/pocketmoney"
@@ -84,11 +84,24 @@
         android:layout_height="0dp"
         android:layout_weight="7">
 
-        <ListView
-            android:id="@+id/list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+
+                android:text="@string/empty_list" />
+        </FrameLayout>
     </LinearLayout>
 
 
