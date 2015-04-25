@@ -13,8 +13,8 @@
         <TextView
             android:id="@+id/transation_item_title"
             android:layout_width="wrap_content"
-            android:textSize="35sp"
             android:layout_height="wrap_content"
+            android:textSize="35sp"
             android:padding="3dp"/>
 
         <TextView

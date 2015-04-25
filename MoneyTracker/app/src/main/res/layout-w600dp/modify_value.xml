@@ -9,12 +9,8 @@
         android:id="@+id/spinner_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
-    <Spinner
-        android:id="@+id/spinner_default"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,5 +28,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_cancel"
             android:text="@string/btn_cancel"/>
-    </LinearLayout>
+        </LinearLayout>
 </LinearLayout>

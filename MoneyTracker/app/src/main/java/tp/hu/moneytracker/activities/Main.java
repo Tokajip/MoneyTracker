@@ -46,7 +46,8 @@ public class Main extends Activity{
                         startActivity(intent);
                         return;
                     case 3:
-                        Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();
+                        intent = new Intent(getApplicationContext(), Rules.class);
+                        startActivity(intent);
                         return;
                     default:
                         Toast.makeText(ctx, "Fejlesztés alatt", Toast.LENGTH_LONG).show();

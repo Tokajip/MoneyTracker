@@ -42,7 +42,7 @@ public class GcmMessageHandler extends IntentService {
         String messageType = gcm.getMessageType(intent);
 
         mes = extras.getString("payload");
-        new ProcessPushNotification(getApplicationContext()).processDatas(mes,handler);
+        new ProcessPushNotification(this).processDatas(mes,handler);
 
         Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
 

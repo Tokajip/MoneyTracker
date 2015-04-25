@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +30,7 @@ import tp.hu.moneytracker.adapter.TransactionAdapter;
 import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
 import tp.hu.moneytracker.db.DbConstants;
+import tp.hu.moneytracker.util.ProcessPushNotification;
 
 //Todo: Activityből származni
 public class Income extends ActionBarActivity {
@@ -76,18 +80,32 @@ public class Income extends ActionBarActivity {
         dialog.setContentView(R.layout.category_selection);
         dialog.setTitle(selectedTran.getTitle());
 
-        final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        final Spinner spinner_category = (Spinner) dialog.findViewById(R.id.spinner_category);
+        ArrayAdapter<CharSequence> adapter_category = ArrayAdapter.createFromResource(this,
                 R.array.categories_income, R.layout.spinner_item);
-        adapter.setDropDownViewResource(R.layout.spinner_checkeditem);
-        spinner.setAdapter(adapter);
+        adapter_category.setDropDownViewResource(R.layout.spinner_checkeditem);
+        spinner_category.setAdapter(adapter_category);
+
+        final Spinner spinner_default = (Spinner) dialog.findViewById(R.id.spinner_default);
+        ArrayAdapter<CharSequence> adapter_default = ArrayAdapter.createFromResource(this,
+                R.array.default_options, R.layout.spinner_item);
+        adapter_default.setDropDownViewResource(R.layout.spinner_checkeditem);
+        spinner_default.setAdapter(adapter_default);
+
 
         Button ok = (Button) dialog.findViewById(R.id.btn_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedTran.setCategory((String) spinner.getSelectedItem());
-                if (dbLoader.update(selectedTran)) {
+                selectedTran.setCategory((String) spinner_category.getSelectedItem());
+                if(((String)spinner_default.getSelectedItem()).equalsIgnoreCase("Igen")){
+                        SharedPreferences sp = getSharedPreferences(ProcessPushNotification.PREF_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(selectedTran.getTitle(),selectedTran.getCategory());
+                    editor.apply();
+                    Toast.makeText(ctx, selectedTran.getCategory(), Toast.LENGTH_LONG).show();
+                }
+                    if (dbLoader.update(selectedTran)) {
                     Toast.makeText(ctx, "Sikeres kategória váltás", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(ctx, "Sikertelen kategória váltás", Toast.LENGTH_LONG).show();
@@ -243,7 +261,6 @@ public class Income extends ActionBarActivity {
         getAllTask.execute(params);
     }
 
-/*
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -262,6 +279,7 @@ public class Income extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             dbLoader.deleteAll();
+            getSharedPreferences(ProcessPushNotification.PREF_NAME, 0).edit().clear().commit();
             return true;
         }
         if (id == R.id.action_share) {
@@ -270,7 +288,9 @@ public class Income extends ActionBarActivity {
             int i = 0;
             Cursor c = dbLoader.fetchAll();
             while (c.moveToNext()) {
-                list[i++] = TransactionDbLoader.getTransationByCursor(c).toString();
+                if (TransactionDbLoader.getTransationByCursor(c) != null) {
+                    list[i++] = TransactionDbLoader.getTransationByCursor(c).toString();
+                }
             }
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
@@ -283,12 +303,13 @@ public class Income extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-*/
 
     private String getMyStringMessage(String[] arr) {
         StringBuilder builder = new StringBuilder();
         for (String s : arr) {
-            builder.append(s);
+            if (s != null) {
+                builder.append(s);
+            }
         }
         return builder.toString();
     }
@@ -306,7 +327,7 @@ public class Income extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),Main.class);
+        Intent intent = new Intent(getApplicationContext(), Main.class);
         startActivity(intent);
     }
 }

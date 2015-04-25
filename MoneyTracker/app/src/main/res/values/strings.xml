@@ -30,6 +30,8 @@
     <string name="atm">ATM</string>
     <string name="empty_list">Nincs adat ilyen kereséshez</string>
     <string name="sum">Összesen</string>
+    <string name="yes">Igen</string>
+    <string name="no">Nem</string>
     <string-array name="categories_income">
         <item>@string/salary</item>
         <item>@string/pocketmoney</item>
@@ -46,4 +48,12 @@
         <item>@string/sport</item>
         <item>@string/other_outgo</item>
     </string-array>
+    <string-array name="default_options">
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+    <string name="title_activity_rules">Rules</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="rule">Szabályok</string>
 </resources>

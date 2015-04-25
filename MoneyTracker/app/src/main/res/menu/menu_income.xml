@@ -10,7 +10,8 @@
     <item
         android:id="@+id/action_share"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_action_save"
         android:title="@string/action_share"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
 </menu>

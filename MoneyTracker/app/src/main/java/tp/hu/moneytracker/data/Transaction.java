@@ -69,9 +69,8 @@ public class Transaction implements Serializable {
     public void setType(int i){
         type = i==0 ? transactionType.outgo : transactionType.income;
     }
-/*
     @Override
     public String toString() {
-        return "title: "+getTitle()+" date: "+getDate()+" price: "+ getDate()+" type: "+getType()+" category: "+getCategory();
-    }*/
+        return "title;"+getTitle()+";date;"+getDate()+";price;"+ getDate()+";type;"+getType()+";category;"+getCategory();
+    }
 }

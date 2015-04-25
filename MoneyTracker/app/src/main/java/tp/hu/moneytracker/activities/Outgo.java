@@ -3,6 +3,7 @@ package tp.hu.moneytracker.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import tp.hu.moneytracker.R;
 import tp.hu.moneytracker.adapter.TransactionAdapter;
 import tp.hu.moneytracker.data.Transaction;
 import tp.hu.moneytracker.datastorage.TransactionDbLoader;
+import tp.hu.moneytracker.util.ProcessPushNotification;
 
 
 public class Outgo extends ActionBarActivity {
@@ -73,26 +75,39 @@ public class Outgo extends ActionBarActivity {
         dialog.setContentView(R.layout.category_selection);
         dialog.setTitle(selectedTran.getTitle());
 
-        final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+
+        final Spinner spinner_category = (Spinner) dialog.findViewById(R.id.spinner_category);
+        ArrayAdapter<CharSequence> adapter_category = ArrayAdapter.createFromResource(this,
                 R.array.categories_outgo, R.layout.spinner_item);
-        adapter.setDropDownViewResource(R.layout.spinner_checkeditem);
-        spinner.setAdapter(adapter);
-        spinner.setPadding(5,5,5,5);
+        adapter_category.setDropDownViewResource(R.layout.spinner_checkeditem);
+        spinner_category.setAdapter(adapter_category);
+
+        final Spinner spinner_default = (Spinner) dialog.findViewById(R.id.spinner_default);
+        ArrayAdapter<CharSequence> adapter_default = ArrayAdapter.createFromResource(this,
+                R.array.default_options, R.layout.spinner_item);
+        adapter_default.setDropDownViewResource(R.layout.spinner_checkeditem);
+        spinner_default.setAdapter(adapter_default);
 
         Button ok = (Button) dialog.findViewById(R.id.btn_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedTran.setCategory((String)spinner.getSelectedItem());
-                if(dbLoader.update(selectedTran)){
-                    Toast.makeText(ctx,"Sikeres kategória váltás",Toast.LENGTH_LONG).show();
+                selectedTran.setCategory((String) spinner_category.getSelectedItem());
+                if(((String)spinner_default.getSelectedItem()).equalsIgnoreCase("Igen")){
+                    SharedPreferences sp = getSharedPreferences(ProcessPushNotification.PREF_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(selectedTran.getTitle(),selectedTran.getCategory());
+                    editor.apply();
+                    Toast.makeText(ctx, selectedTran.getCategory(), Toast.LENGTH_LONG).show();
                 }
-                else {
-                    Toast.makeText(ctx,"Sikertelen kategória váltás",Toast.LENGTH_LONG).show();
+                if (dbLoader.update(selectedTran)) {
+                    Toast.makeText(ctx, "Sikeres kategória váltás", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ctx, "Sikertelen kategória váltás", Toast.LENGTH_LONG).show();
                 }
                 selected.performClick();
                 dialog.dismiss();
+
             }
         });
 
